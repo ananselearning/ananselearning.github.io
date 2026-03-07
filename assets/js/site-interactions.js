@@ -38,6 +38,22 @@
       return;
     }
 
+    const isMobileViewport = () => window.innerWidth <= 992;
+
+    const closeAllMenus = () => {
+      menus.forEach((menu) => {
+        const menuList = menu.querySelector(".menu-list");
+        const hamburger = menu.querySelector(".hamburger");
+        menu.classList.remove("menu-open");
+        if (menuList) {
+          menuList.setAttribute("aria-hidden", "true");
+        }
+        if (hamburger) {
+          hamburger.setAttribute("aria-expanded", "false");
+        }
+      });
+    };
+
     menus.forEach((menu, menuIndex) => {
       const menuList = menu.querySelector(".menu-list");
       if (!menuList) {
@@ -68,24 +84,39 @@
       hamburger.setAttribute("aria-label", "Toggle navigation menu");
       hamburger.setAttribute("aria-haspopup", "true");
 
+      if (isMobileViewport()) {
+        menuList.setAttribute("aria-hidden", "true");
+      } else {
+        menuList.setAttribute("aria-hidden", "false");
+      }
+
       const closeMenu = () => {
         menu.classList.remove("menu-open");
+        menuList.setAttribute("aria-hidden", "true");
         hamburger.setAttribute("aria-expanded", "false");
       };
 
+      const openMenu = () => {
+        closeAllMenus();
+        menu.classList.add("menu-open");
+        menuList.setAttribute("aria-hidden", "false");
+        hamburger.setAttribute("aria-expanded", "true");
+      };
+
       const toggleMenu = () => {
-        const nextState = !menu.classList.contains("menu-open");
-        menu.classList.toggle("menu-open", nextState);
-        hamburger.setAttribute("aria-expanded", String(nextState));
+        if (!isMobileViewport()) {
+          return;
+        }
+
+        if (menu.classList.contains("menu-open")) {
+          closeMenu();
+          return;
+        }
+
+        openMenu();
       };
 
       hamburger.addEventListener("click", toggleMenu);
-      hamburger.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          toggleMenu();
-        }
-      });
 
       menuList.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => {
@@ -94,43 +125,49 @@
           }
         });
       });
+    });
 
-      document.addEventListener("click", (event) => {
-        if (window.innerWidth > 992) {
-          return;
-        }
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isMobileViewport()) {
+        closeAllMenus();
+      }
+    });
 
-        if (!menu.classList.contains("menu-open")) {
-          return;
-        }
+    document.addEventListener("click", (event) => {
+      if (!isMobileViewport()) {
+        return;
+      }
 
-        if (menu.contains(event.target)) {
-          return;
-        }
+      const clickedInsideMenu = event.target.closest(".main-menu");
+      const clickedHamburger = event.target.closest(".hamburger");
+      if (clickedInsideMenu || clickedHamburger) {
+        return;
+      }
 
-        closeMenu();
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key !== "Escape") {
-          return;
-        }
-
-        if (window.innerWidth <= 992) {
-          closeMenu();
-        }
-      });
+      const isAnyOpen = Array.from(menus).some((menu) =>
+        menu.classList.contains("menu-open"),
+      );
+      if (isAnyOpen) {
+        closeAllMenus();
+      }
     });
 
     window.addEventListener(
       "resize",
       () => {
-        if (window.innerWidth > 992) {
-          document.querySelectorAll(".main-menu.menu-open").forEach((menu) => {
-            menu.classList.remove("menu-open");
-            const hamburger = menu.querySelector(".hamburger");
-            if (hamburger) {
-              hamburger.setAttribute("aria-expanded", "false");
+        if (!isMobileViewport()) {
+          closeAllMenus();
+          menus.forEach((menu) => {
+            const menuList = menu.querySelector(".menu-list");
+            if (menuList) {
+              menuList.setAttribute("aria-hidden", "false");
+            }
+          });
+        } else {
+          menus.forEach((menu) => {
+            const menuList = menu.querySelector(".menu-list");
+            if (menuList && !menu.classList.contains("menu-open")) {
+              menuList.setAttribute("aria-hidden", "true");
             }
           });
         }

@@ -1090,31 +1090,29 @@ footer a {
   }
 
   #header .row.align-items-center {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 0.75rem;
   }
 
   #header .row.align-items-center > .col-md-3 {
-    flex: 1 1 auto;
-    width: auto;
+    flex: 0 0 100%;
+    width: 100%;
   }
 
   #header .row.align-items-center > .col-md-9 {
-    flex: 0 0 auto;
-    width: auto;
-    margin-left: auto;
+    flex: 0 0 100%;
+    width: 100%;
+    margin-left: 0;
   }
 
   #header #navbar {
-    width: auto;
+    width: 100%;
   }
 
   .main-menu {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: auto;
+    display: block;
+    width: 100%;
   }
 
   .hamburger {
@@ -1125,26 +1123,21 @@ footer a {
     min-height: 48px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(18, 64, 46, 0.12);
-    margin-left: auto;
+    margin-left: 0;
+    position: relative;
+    z-index: 1;
   }
 
   .main-menu .menu-list {
     display: none;
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    left: auto;
-    width: min(340px, calc(100vw - 32px));
-    background: rgba(255, 255, 255, 0.97);
-    backdrop-filter: blur(8px);
+    position: static;
+    width: 100%;
+    background: #fff;
     border: 1px solid #cde4d8;
     border-radius: 12px;
-    box-shadow: 0 22px 44px rgba(16, 56, 41, 0.18);
-    padding: 0.85rem;
-    z-index: 50;
-    animation: mobileMenuIn 0.25s ease;
-    max-height: calc(100dvh - 130px);
-    overflow-y: auto;
+    box-shadow: 0 12px 26px rgba(16, 56, 41, 0.12);
+    padding: 0.4rem;
+    margin-top: 0.5rem;
   }
 
   .main-menu .menu-list .menu-item {
@@ -1153,8 +1146,9 @@ footer a {
 
   .main-menu .menu-list .menu-item a {
     display: block;
-    padding: 0.55rem 0.4rem;
-    border-radius: 8px;
+    padding: 0.7rem 0.75rem;
+    border-radius: 10px;
+    font-size: 0.96rem;
   }
 
   .main-menu .menu-list .menu-item a:hover {
