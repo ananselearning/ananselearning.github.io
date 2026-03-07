@@ -52,11 +52,13 @@
         hamburger.innerHTML =
           '<span class="bar"></span><span class="bar"></span><span class="bar"></span>';
         menu.appendChild(hamburger);
-      }
-
-      if (hamburger.tagName.toLowerCase() !== "button") {
-        hamburger.setAttribute("role", "button");
-        hamburger.setAttribute("tabindex", "0");
+      } else if (hamburger.tagName.toLowerCase() !== "button") {
+        const replacement = document.createElement("button");
+        replacement.type = "button";
+        replacement.className = hamburger.className || "hamburger";
+        replacement.innerHTML = hamburger.innerHTML;
+        hamburger.replaceWith(replacement);
+        hamburger = replacement;
       }
 
       const menuId = menuList.id || `mobile-menu-${menuIndex + 1}`;
@@ -64,6 +66,12 @@
       hamburger.setAttribute("aria-controls", menuId);
       hamburger.setAttribute("aria-expanded", "false");
       hamburger.setAttribute("aria-label", "Toggle navigation menu");
+      hamburger.setAttribute("aria-haspopup", "true");
+
+      const closeMenu = () => {
+        menu.classList.remove("menu-open");
+        hamburger.setAttribute("aria-expanded", "false");
+      };
 
       const toggleMenu = () => {
         const nextState = !menu.classList.contains("menu-open");
@@ -82,10 +90,35 @@
       menuList.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => {
           if (window.innerWidth <= 992) {
-            menu.classList.remove("menu-open");
-            hamburger.setAttribute("aria-expanded", "false");
+            closeMenu();
           }
         });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (window.innerWidth > 992) {
+          return;
+        }
+
+        if (!menu.classList.contains("menu-open")) {
+          return;
+        }
+
+        if (menu.contains(event.target)) {
+          return;
+        }
+
+        closeMenu();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") {
+          return;
+        }
+
+        if (window.innerWidth <= 992) {
+          closeMenu();
+        }
       });
     });
 
