@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ananse Learning | Store</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/icomoon/icomoon.css">
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/ananse.css">
+</head>
+
+<body class="store-page">
+    <header id="header">
+        <div class="container-fluid py-3">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <div class="main-logo"><a href="../index.html">Ananse Learning</a></div>
+                </div>
+                <div class="col-md-9">
+                    <nav id="navbar">
+                        <div class="main-menu stellarnav">
+                            <ul class="menu-list">
+                                <li class="menu-item"><a href="../index.html">Home</a></li>
+                                <li class="menu-item"><a href="about.html">About</a></li>
+                                <li class="menu-item"><a href="learning-pathways.html">The Web</a></li>
+                                <li class="menu-item"><a href="ntentan-universe.html">Ntentan Universe</a></li>
+                                <li class="menu-item active"><a href="store.html">Store</a></li>
+                                <li class="menu-item"><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container fade-in-up">
+            <h1>Store Catalogue</h1>
+            <p>This catalogue is built from the Ananse Learning product list, with books, posters, and flashcards for
+                ages 3–12+ in Ghana and across the diaspora.</p>
+            <a href="https://paystack.shop/ananselearning" class="btn btn-primary mt-3" target="_blank"
+                rel="noopener">Visit our store</a>
+            <p class="small-note mt-2 mb-0">Bundles, products and more</p>
+        </div>
+    </section>
+
+    <section class="section-block pb-0">
+        <div class="container">
+            <div class="store-toolbar">
+                <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
+                    <div>
+                        <button class="store-filter-btn is-active" data-filter="all" type="button">All</button>
+                        <button class="store-filter-btn" data-filter="books" type="button">Books</button>
+                        <button class="store-filter-btn" data-filter="posters" type="button">Posters</button>
+                        <button class="store-filter-btn" data-filter="flashcards" type="button">Flashcards</button>
+                    </div>
+                    <div class="d-flex flex-column flex-sm-row gap-2 w-100" style="max-width: 520px;">
+                        <input id="store-search" class="form-control" type="search"
+                            placeholder="Search products, themes, or language">
+                        <select id="store-sort" class="form-select" style="max-width: 210px;">
+                            <option value="default">Sort: Recommended</option>
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="price-asc">Price (Low-High)</option>
+                            <option value="price-desc">Price (High-Low)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-md-row gap-2 mt-2">
+                    <select id="age-filter" class="form-select" style="max-width: 220px;">
+                        <option value="all">Age: All ranges</option>
+                        <option value="3-6">Age 3–6</option>
+                        <option value="7-9">Age 7–9</option>
+                        <option value="10-12">Age 10–12+</option>
+                    </select>
+                    <select id="language-filter" class="form-select" style="max-width: 220px;">
+                        <option value="all">Language: All</option>
+                        <option value="english">English</option>
+                        <option value="twi">Asante Twi</option>
+                        <option value="eve">Eʋe</option>
+                        <option value="ga">Ga</option>
+                    </select>
+                    <select id="status-filter" class="form-select" style="max-width: 220px;">
+                        <option value="all">Status: All</option>
+                        <option value="in-stock">In stock</option>
+                        <option value="preorder">Preorder / Coming soon</option>
+                    </select>
+                </div>
+                <div class="store-age-tabs" id="store-age-tabs">
+                    <button class="store-age-tab is-active" data-age="all" type="button">All Ages</button>
+                    <button class="store-age-tab" data-age="3-6" type="button">Age 3–6</button>
+                    <button class="store-age-tab" data-age="7-9" type="button">Age 7–9</button>
+                    <button class="store-age-tab" data-age="10-12" type="button">Age 10–12+</button>
+                </div>
+                <div class="store-result-count" id="store-result-count">Showing all products</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block pt-0">
+        <div class="container">
+            <div class="collection-tiles">
+                <a href="#" class="collection-tile" data-quick-filter="books">
+                    <h4>Books Collection</h4>
+                    <p class="mb-0">Storybooks, bilingual books, and research titles.</p>
+                </a>
+                <a href="#" class="collection-tile" data-quick-filter="posters">
+                    <h4>Posters Collection</h4>
+                    <p class="mb-0">A3 laminated literacy, numeracy, heritage, and character posters.</p>
+                </a>
+                <a href="#" class="collection-tile" data-quick-filter="flashcards">
+                    <h4>Flashcards Collection</h4>
+                    <p class="mb-0">Multilingual tactile learning sets and affirmations.</p>
+                </a>
+                <a href="#bundles" class="collection-tile">
+                    <h4>School &amp; Family Bundles</h4>
+                    <p class="mb-0">Curated bundles optimized for value and international dispatch.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block pt-0">
+        <div class="container">
+            <div class="most-loved-grid store-preview-grid">
+                <article class="catalogue-card store-preview-card"
+                    data-paystack-url="https://paystack.com/buy/ananselearning-book-worlds-they-made">
+                    <figure><img src="../assets/images/book_covers/Worlds They Made.png" alt="Worlds They Made">
+                    </figure>
+                    <span class="status-pill">Most Loved</span>
+                    <h4>Worlds They Made</h4>
+                    <p>Parent-favorite heritage and trailblazer title for ages 9–12+.</p>
+                    <p class="price">GHS 150</p>
+                    <a href="https://paystack.com/buy/ananselearning-book-worlds-they-made"
+                        class="btn btn-sm btn-primary" target="_blank" rel="noopener">Buy on Paystack</a>
+                </article>
+                <article class="catalogue-card store-preview-card"
+                    data-paystack-url="https://paystack.com/buy/ananselearning-book-abcdawadawa">
+                    <figure><img src="../assets/images/book_covers/abcdawadawa cover.png" alt="abcdawadawa"></figure>
+                    <span class="status-pill">Product of the Month</span>
+                    <h4>abcdawadawa</h4>
+                    <p>A food alphabet from Aboboi to Zonkom for playful early literacy.</p>
+                    <p class="price">GHS 80</p>
+                    <a href="https://paystack.com/buy/ananselearning-book-abcdawadawa" class="btn btn-sm btn-primary"
+                        target="_blank" rel="noopener">Buy on Paystack</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block catalogue-section" data-category="books">
+        <div class="container">
+            <h2 class="mb-4">Books</h2>
+            <div class="catalogue-grid">
+                <article class="catalogue-card">
+                    <figure><img src="../assets/images/book_covers/Worlds They Made.png" alt="Worlds They Made">
+                    </figure>
+                    <h4>Worlds They Made - Portraits of 25 Ghanaian Trailblazers</h4>
+                    <p class="catalogue-meta">Non-fiction · 7.5 x 9.5 inches · 66 pp</p>
+                    <p>Twenty-five Ghanaian trailblazers, from architecture to zoology. Includes research projects.</p>
+                    <p class="price">GHS 150</p>
+                </article>
+                <article class="catalogue-card">
+                    <figure><img src="../assets/images/book_covers/The Design Workbook.png" alt="The Design Workbook">
+                    </figure>
+                    <h4>The Design Workbook: Food &amp; Culture</h4>
+                    <p class="catalogue-meta">Workbook · A4 · 84 pp</p>
+                    <p>Five sections with stories, design challenges, entrepreneur profiles, and research activities.
+                    </p>
+                    <p class="price">GHS 150</p>
+                </article>
+                <article class="catalogue-card">
+                    <figure><img src="../assets/images/product-item1.jpg" alt="abcdawadawa"></figure>
+                    <h4>abcdawadawa</h4>
+                    <p class="catalogue-meta">Educational Book · 8.25 x 8.25 inches · 32 pp</p>
+                    <p>A food alphabet from Aboboi to Zonkom. Can you make a list of your own?</p>
+                    <p class="price">GHS 80</p>
+                </article>
+                <article class="catalogue-card">
+                    <figure><img src="../assets/images/product-item2.jpg" alt="abd bilingual"></figure>
+                    <h4>abd (Asante Twi-English) Bilingual Book</h4>
+                    <p class="catalogue-meta">Educational Book · 7.5 x 9.5 inches · 48 pp</p>
+                    <p>Letters, colours, shapes, numbers, animals, and more in Asante Twi and English.</p>
+                    <p class="price">GHS 120</p>
+                </article>
+                <article class="catalogue-card">
+                    <figure><img src="../assets/images/product-item3.jpg" alt="Adobea Bakes Coconut Doughts"></figure>
+                    <h4>Adobea Bakes Coconut Doughts</h4>
+                    <p class="catalogue-meta">Storybook · 7.5 x 9.5 inches · 36 pp</p>
+                    <p>Adobea on a delicious journey through Ghanaian food from A to Z with notes and flavour.</p>
+                    <p class="price">GHS 100</p>
+                </article>
+                <article class="catalogue-card">
+                    <figure><img src="../assets/images/product-item4.jpg" alt="My Favourite Things"></figure>
+                    <h4>My Favourite Things - Eno's Colouring Book</h4>
+                    <p class="catalogue-meta">Colouring Book · A4 · 32 pp</p>
+                    <p>Meet Eno and colour her favourite things. Includes space for your own drawings.</p>
+                    <p class="price">GHS 70</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>abd (Eʋe-English) Bilingual Book</h4>
+                    <p class="catalogue-meta">Educational Book · 7.5 x 9.5 inches · 48 pp</p>
+                    <p>Letters, colours, shapes, numbers, and more in Eʋe and English.</p>
+                    <p class="price">Price TBC <span class="status-pill">Coming Soon</span></p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>abd (Ga-English) Bilingual Book</h4>
+                    <p class="catalogue-meta">Educational Book · 7.5 x 9.5 inches · 48 pp</p>
+                    <p>Letters, colours, shapes, numbers, and more in Ga and English.</p>
+                    <p class="price">Price TBC <span class="status-pill">Coming Soon</span></p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>abd (Mfantse-English) Bilingual Book</h4>
+                    <p class="catalogue-meta">Educational Book · 7.5 x 9.5 inches · 48 pp</p>
+                    <p>Letters, colours, shapes, numbers, and more in Mfantse and English.</p>
+                    <p class="price">Price TBC <span class="status-pill">Coming Soon</span></p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Adinkra: 50 Symbols that Speak</h4>
+                    <p class="catalogue-meta">Non-fiction · 8.25 x 8.25 inches · 104 pp</p>
+                    <p>Fifty Adinkra symbols reimagined as affirmations for living, feeling, and reflecting.</p>
+                    <p class="price">Price TBC <span class="status-pill">Coming Soon</span></p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Ghana's Roadmakers</h4>
+                    <p class="catalogue-meta">Educational Book · 8.25 x 8.25 inches · 48 pp</p>
+                    <p>Forty Ghanaian builders, innovators, and visionaries and what they made possible.</p>
+                    <p class="price">Price TBC <span class="status-pill">Coming Soon</span></p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Being Nyaneba</h4>
+                    <p class="catalogue-meta">Fiction · A5 · 60 pp</p>
+                    <p>A story about courage, purpose, and what success really means.</p>
+                    <p class="price">Price TBC <span class="status-pill">Coming Soon</span></p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block alt catalogue-section" data-category="posters">
+        <div class="container">
+            <h2 class="mb-4">Posters (A3, 350gsm laminated)</h2>
+            <p class="mb-4">Standard poster price from catalogue: <strong>GHS 60 each</strong>.</p>
+            <div class="catalogue-grid">
+                <article class="catalogue-card">
+                    <h4>Letters of the Alphabet</h4>
+                    <p>A for Ahenema, Z for Zebra. Engaging alphabet poster and wall art.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Ananse’s Alphabets...or something like that!</h4>
+                    <p>Twenty-six letters, names, and stories waiting to be written.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Colours</h4>
+                    <p>The colours of the world around you, named and illustrated.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Grandpa Gyimah's Garage</h4>
+                    <p>Nine colours through foods, creatures, and everyday objects.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Shapes</h4>
+                    <p>Circles, squares, diamonds, and more for the youngest explorers.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>The Shapes of My Snacks</h4>
+                    <p>A playful geometry poster inspired by familiar snacks.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Fruits &amp; Vegetables</h4>
+                    <p>Beautifully illustrated fruits and vegetables for little learners.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Green to Gold: Plantain's Amazing Journey</h4>
+                    <p>From unripe to golden with downloadable extension activities.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Giraffe Days of the Week</h4>
+                    <p>Seven days in Asante Twi, Ga, and Eʋe. Extra languages by custom order.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Months of the Year</h4>
+                    <p>Twelve months in Asante Twi, Ga, and Eʋe with custom options.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Animal Portrait</h4>
+                    <p>Five creatures in a forest scene full of quiet wonder.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Jungle Portrait</h4>
+                    <p>Deep green portrait scene where everyone shows up.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Brempong the Bear</h4>
+                    <p>Books stacked, hot chocolate poured, and a bear in deep focus.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Lizzie the Lion</h4>
+                    <p>Present, proud, and perfectly at home on your wall.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Gigraw the Giraffe</h4>
+                    <p>A night portrait for dreamers and wonderers.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Zanzama the Zebra</h4>
+                    <p>A portrait of a zebra who knows exactly who she is.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Journey to Kukurantumi</h4>
+                    <p>Everyone piled in and the adventure had already begun.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Kekeli’s Kitchen</h4>
+                    <p>Flavours and numbers come alive with downloadable activities.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>A Kenkey Feast</h4>
+                    <p>Count from one to ten through a classic Ghanaian spread.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Doris' Delicious Desserts</h4>
+                    <p>A dessert world poster with extension activities.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Numbers in English, Asante Twi, Eʋe, Ga</h4>
+                    <p>Multilingual numbers poster with custom language options.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Map of Ghana</h4>
+                    <p>Sixteen regions, landmarks, and wildlife for closer exploration.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>Food Map of Ghana</h4>
+                    <p>Explore Ghana through selected crops from each region.</p>
+                    <p class="price">GHS 60</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block catalogue-section" data-category="flashcards">
+        <div class="container">
+            <h2 class="mb-4">Flashcards</h2>
+            <div class="catalogue-grid">
+                <article class="catalogue-card">
+                    <h4>Bilingual Number Flashcards (English, Eʋe, Ga, Asante Twi)</h4>
+                    <p class="catalogue-meta">Flashcards · 4 x 6 inches</p>
+                    <p>Twenty-one cards from zero to twenty with pictures and words.</p>
+                    <p class="price">Preorder <span class="status-pill">Price TBC</span></p>
+                </article>
+                <article class="catalogue-card">
+                    <h4>A Year of Affirmations (Months of the Year)</h4>
+                    <p class="catalogue-meta">Flashcards · 6 x 4 inches</p>
+                    <p>Twelve months with Adinkra/Eʋe Ɖzesiwo/Ga Samai symbols and affirmations.</p>
+                    <p class="price">Preorder <span class="status-pill">Price TBC</span></p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block alt" id="bundles">
+        <div class="container">
+            <h2 class="mb-4">Bundles (International Value)</h2>
+            <p>International dispatch uses a flat fee per order, so bundles give better value than ordering one item at
+                a
+                time. We make bundles prominent to support diaspora orders in the UK, US, and Canada.</p>
+            <div class="bundle-grid">
+                <article class="bundle-card">
+                    <span class="bundle-badge">Starter Bundle</span>
+                    <h4>Early Explorer (Age 3–6)</h4>
+                    <p>1 alphabet poster + 1 numeracy poster + number flashcards.</p>
+                    <p class="price">From GHS 180</p>
+                </article>
+                <article class="bundle-card">
+                    <span class="bundle-badge">Most Popular</span>
+                    <h4>Culture &amp; Literacy Bundle (Age 6–10)</h4>
+                    <p><em>abcdawadawa</em> + 2 language posters + 1 flashcard set.</p>
+                    <p class="price">From GHS 260</p>
+                </article>
+                <article class="bundle-card">
+                    <span class="bundle-badge">Project Bundle</span>
+                    <h4>Research &amp; Design Bundle (Age 9–12+)</h4>
+                    <p><em>Worlds They Made</em> + Design Workbook + Ghana map poster.</p>
+                    <p class="price">From GHS 360</p>
+                </article>
+            </div>
+            <div class="table-responsive mt-4">
+                <table class="bundle-compare">
+                    <thead>
+                        <tr>
+                            <th>Bundle</th>
+                            <th>Best for</th>
+                            <th>Includes</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Early Explorer</td>
+                            <td>Ages 3–6</td>
+                            <td>2 posters + number flashcards</td>
+                            <td>From GHS 180</td>
+                        </tr>
+                        <tr>
+                            <td>Culture &amp; Literacy</td>
+                            <td>Ages 6–10</td>
+                            <td>1 book + 2 posters + flashcards</td>
+                            <td>From GHS 260</td>
+                        </tr>
+                        <tr>
+                            <td>Research &amp; Design</td>
+                            <td>Ages 9–12+</td>
+                            <td>2 books + 1 map poster</td>
+                            <td>From GHS 360</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="quiz-box mt-4" id="bundle-quiz">
+                <h4>Find your child’s best bundle</h4>
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <select id="quiz-age" class="form-select">
+                            <option value="">Select age range</option>
+                            <option value="3-6">Age 3–6</option>
+                            <option value="7-9">Age 7–9</option>
+                            <option value="10-12">Age 10–12+</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="quiz-focus" class="form-select">
+                            <option value="">Select learning focus</option>
+                            <option value="language">Language &amp; literacy</option>
+                            <option value="heritage">Heritage &amp; culture</option>
+                            <option value="maker">Maker &amp; research</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button id="quiz-submit" type="button" class="btn btn-primary w-100">Recommend bundle</button>
+                    </div>
+                </div>
+                <div class="quiz-result" id="quiz-result">Choose age and focus to get a recommendation.</div>
+            </div>
+
+            <p class="small-note mt-3">Need a custom bundle? Use <a href="https://wa.me/233244840042"
+                    data-whatsapp-context="the Store page bundles section, and I am interested in a custom bundle"
+                    target="_blank" rel="noopener">WhatsApp chat</a> and we’ll curate one for your child or school.</p>
+        </div>
+    </section>
+
+    <section class="section-block">
+        <div class="container">
+            <h2 class="mb-4">Payments &amp; Fulfilment</h2>
+            <div class="info-grid">
+                <article class="info-panel">
+                    <h4>Ghana Payments</h4>
+                    <p>Mobile Money: MTN, Vodafone, AirtelTigo.<br>Gateway options: Paystack or Hubtel.</p>
+                    <p>Manual bank transfer accepted. Orders can be placed pending confirmation.</p>
+                </article>
+                <article class="info-panel bank-details">
+                    <h4>Bank Transfer Details</h4>
+                    Account name: Ananse Ntontan Exploration Ltd<br>
+                    Account number: GHS 01-503-701792-00<br>
+                    SWIFT code: SCBLGHACXXX<br>
+                    Branch: Independence Avenue Branch, code 00200
+                </article>
+                <article class="info-panel">
+                    <h4>International Payments</h4>
+                    <p>Card payments for diaspora customers: Stripe or Paystack International.</p>
+                    <p class="small-note">Product prices are shown in GHS with approximate USD/GBP on each item.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block pt-0">
+        <div class="container">
+            <h2 class="mb-3">Safety &amp; Quality You Can Trust</h2>
+            <div class="trust-badges">
+                <article class="trust-badge">
+                    <h4>Child-safe design</h4>
+                    <p class="mb-0">Learning materials designed with age-appropriate safety and usability in mind.</p>
+                </article>
+                <article class="trust-badge">
+                    <h4>High quality print</h4>
+                    <p class="mb-0">Durable laminated posters and strong card stock for repeated classroom/home use.</p>
+                </article>
+                <article class="trust-badge">
+                    <h4>Culturally verified content</h4>
+                    <p class="mb-0">Language and heritage references are developed with context and care.</p>
+                </article>
+                <article class="trust-badge">
+                    <h4>Parent &amp; educator tested</h4>
+                    <p class="mb-0">Products are used by families and educators for practical, joyful learning.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block pt-0">
+        <div class="container">
+            <div class="admin-tools">
+                <h3>Impact &amp; Educator Resources</h3>
+                <p>We support schools and families with culturally rooted resources and workshop pathways for
+                    classrooms.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-outline-primary" href="contact.html#school-enquiry">School Enquiry</a>
+                    <a class="btn btn-outline-primary" href="learning-pathways.html">Pathway Resources</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-block pt-0">
+        <div class="container">
+            <div class="admin-tools">
+                <h3>Order Export by Destination (Admin)</h3>
+                <p>Use the admin tool to filter orders by delivery country and export CSV for VFS fulfilment workflows.
+                </p>
+                <a class="btn btn-outline-primary" href="orders-admin-desk.html">Open Admin Order Desk</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="footer-newsletter">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-8">
+                    <h3>Need help choosing products?</h3>
+                    <p>Message us on WhatsApp for bundle recommendations and international ordering support.</p>
+                </div>
+                <div class="col-lg-4"><a href="https://wa.me/233244840042"
+                        data-whatsapp-context="the Store page school pricing and international dispatch section"
+                        class="btn btn-light" target="_blank" rel="noopener">Chat on WhatsApp</a></div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container">Email: ananselearning@gmail.com · Phone: +233 244 840 042 · <a
+                    href="contact.html">Contact form</a> · <a href="https://www.instagram.com/ananselearning"
+                    target="_blank" rel="noopener">Instagram</a></div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/store-interactions.js"></script>
+        <script src="../assets/js/site-interactions.js"></script>
+</body>
+
+</html>
