@@ -781,6 +781,24 @@
       return "https://paystack.com/buy/ananselearning-book-abcdawadawa";
     }
 
+    if (normalizedTitle.includes("design workbook")) {
+      return "https://paystack.com/buy/ananselearning-book-the-design-workbook-food--culture-book-";
+    }
+
+    if (
+      normalizedTitle.includes("my favourite things") ||
+      normalizedTitle.includes("enos colouring book")
+    ) {
+      return "https://paystack.com/buy/ananselearning-my-favourite-things---enos-colouring-book";
+    }
+
+    if (
+      normalizedTitle.includes("adobea bakes") ||
+      normalizedTitle.includes("coconut doughts")
+    ) {
+      return "https://paystack.com/buy/ananselearning-book-adobea-bakes-coconut-doughts";
+    }
+
     return null;
   }
 
