@@ -667,11 +667,26 @@
   }
 
   function getImageForCard(category, title) {
+    const normalized = normalizeProductTitle(title);
+
+    if (category === "posters") {
+      const posterFileName = getPosterFileName(normalized);
+      return posterFileName
+        ? `${assetsPrefix}/images/Posters/${encodeURIComponent(posterFileName)}`
+        : getPlaceholderForCategory(category);
+    }
+
+    if (category === "flashcards") {
+      const flashcardFileName = getFlashcardFileName(normalized);
+      return flashcardFileName
+        ? `${assetsPrefix}/images/Flashcards/${encodeURI(flashcardFileName)}`
+        : getPlaceholderForCategory(category);
+    }
+
     if (category !== "books") {
       return getPlaceholderForCategory(category);
     }
 
-    const normalized = title.toLowerCase();
     const coverFileName = getBookCoverFileName(normalized);
     if (!coverFileName) {
       return getPlaceholderForCategory(category);
@@ -686,16 +701,67 @@
     if (normalizedTitle.includes("design workbook"))
       return "The Design Workbook.png";
     if (normalizedTitle.includes("abcdawadawa")) return "abcdawadawa cover.png";
-    if (
-      normalizedTitle.includes("asante twi-english") ||
-      normalizedTitle.startsWith("abd (")
-    )
-      return "abd cover.png";
+    if (normalizedTitle.startsWith("abd")) return "abd cover.png";
     if (normalizedTitle.includes("adobea bakes"))
       return "adobea bakes updated cover16april2025.png";
     if (normalizedTitle.includes("my favourite things"))
       return "My Favourite Things Cover.png";
     return null;
+  }
+
+  function getPosterFileName(normalizedTitle) {
+    const postersByTitle = {
+      "letters of the alphabet": "1 Letters of the Alphabet.png",
+      "ananses alphabets or something like that":
+        "2 Ananse’s Alphabets...or something like that!.png",
+      colours: "3 Colours.png",
+      "grandpa gyimahs garage": "4 Grandpa Gyimah_s Garage.png",
+      shapes: "5 Shapes.png",
+      "the shapes of my snacks": "6 The Shapes of My Snacks.png",
+      "fruits vegetables": "7 Fruits & Vegetables.png",
+      "green to gold plantains amazing journey": "8 Green to Gold.png",
+      "giraffe days of the week": "9 Days of the Week (in Ga).png",
+      "months of the year": "10 Months of the Year (in Asante Twi).png",
+      "animal portrait": "11 Animal Portrait.png",
+      "jungle portrait": "12 Jungle Portrait.png",
+      "brempong the bear": "13 Brempong the Bear.png",
+      "lizzie the lion": "14 Lizzie the Lion.png",
+      "gigraw the giraffe": "15 Gigraw the Giraffe.png",
+      "zanzama the zebra": "16 Zanzama the Zebra.png",
+      "journey to kukurantumi": "17 Journey to Kukurantumi.png",
+      "kekelis kitchen": "18 Kekeli_s Kitchen.png",
+      "a kenkey feast": "19 A Kenkey Feast.png",
+      "doris delicious desserts": "20 Doris_ Delicious Desserts.png",
+      "numbers in english asante twi eʋe ga": "21 Numbers (in Eʋe).png",
+      "map of ghana": "22 Map of Ghana.png",
+      "food map of ghana": "23 Food Map of Ghana.png",
+    };
+
+    return postersByTitle[normalizedTitle] || null;
+  }
+
+  function getFlashcardFileName(normalizedTitle) {
+    if (normalizedTitle.includes("year of affirmations")) {
+      return "Months of the Year/Cover.png";
+    }
+
+    if (normalizedTitle.includes("number flashcards")) {
+      return "Numbers 0-20/Numbers in Asante Twi.png";
+    }
+
+    return null;
+  }
+
+  function normalizeProductTitle(value) {
+    return String(value || "")
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[’'`]/g, "")
+      .replace(/&/g, " ")
+      .replace(/[^a-z0-9\sʋ]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   function getPaystackProductUrl(title) {
