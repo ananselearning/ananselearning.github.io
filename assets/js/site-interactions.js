@@ -14,6 +14,7 @@
 
     initThemeMode();
     initMobileMenus();
+    initMobileAppNav();
     initPageImagery();
     initWhatsAppPrefillLinks();
     initNewsletterForms();
@@ -332,6 +333,31 @@
     }
 
     const isMobileViewport = () => window.innerWidth <= 992;
+    let backdrop = document.querySelector(".mobile-nav-backdrop");
+
+    if (!backdrop) {
+      backdrop = document.createElement("button");
+      backdrop.type = "button";
+      backdrop.className = "mobile-nav-backdrop";
+      backdrop.setAttribute("aria-label", "Close navigation menu");
+      backdrop.hidden = true;
+      document.body.appendChild(backdrop);
+    }
+
+    const syncBackdrop = () => {
+      const isAnyOpen = Array.from(menus).some((menu) =>
+        menu.classList.contains("menu-open"),
+      );
+
+      if (isMobileViewport() && isAnyOpen) {
+        backdrop.hidden = false;
+        backdrop.classList.add("is-visible");
+        return;
+      }
+
+      backdrop.classList.remove("is-visible");
+      backdrop.hidden = true;
+    };
 
     const closeAllMenus = () => {
       menus.forEach((menu) => {
@@ -346,6 +372,8 @@
           hamburger.setAttribute("aria-expanded", "false");
         }
       });
+
+      syncBackdrop();
     };
 
     menus.forEach((menu, menuIndex) => {
@@ -393,6 +421,7 @@
         menuList.setAttribute("aria-hidden", "true");
         menuList.hidden = true;
         hamburger.setAttribute("aria-expanded", "false");
+        syncBackdrop();
       };
 
       const openMenu = () => {
@@ -401,6 +430,7 @@
         menuList.setAttribute("aria-hidden", "false");
         menuList.hidden = false;
         hamburger.setAttribute("aria-expanded", "true");
+        syncBackdrop();
       };
 
       const toggleMenu = () => {
@@ -432,6 +462,8 @@
         closeAllMenus();
       }
     });
+
+    backdrop.addEventListener("click", closeAllMenus);
 
     document.addEventListener("click", (event) => {
       if (!isMobileViewport()) {
@@ -473,9 +505,126 @@
             }
           });
         }
+
+        syncBackdrop();
       },
       { passive: true },
     );
+  }
+
+  function initMobileAppNav() {
+    const footer = document.querySelector("footer");
+    if (!footer || footer.querySelector(".mobile-app-nav")) {
+      return;
+    }
+
+    const path = window.location.pathname;
+    const rootPrefix = getPageRootPrefix(path);
+    const activeKey = getMobileAppNavActiveKey(path);
+    const primaryHamburger = document.querySelector(".hamburger");
+
+    const items = [
+      {
+        key: "home",
+        label: "Home",
+        iconClass: "icon-notes",
+        href: `${rootPrefix}index.html`,
+      },
+      {
+        key: "web",
+        label: "Web",
+        iconClass: "icon-search",
+        href: `${rootPrefix}pages/learning-pathways.html`,
+      },
+      {
+        key: "universe",
+        label: "Worlds",
+        iconClass: "icon-paper-plane",
+        href: `${rootPrefix}pages/ntentan-universe.html`,
+      },
+      {
+        key: "store",
+        label: "Store",
+        iconClass: "icon-clipboard",
+        href: `${rootPrefix}pages/store.html`,
+      },
+      {
+        key: "contact",
+        label: "Contact",
+        iconClass: "icon-user",
+        href: `${rootPrefix}pages/contact.html`,
+      },
+    ];
+
+    const nav = document.createElement("nav");
+    nav.className = "mobile-app-nav";
+    nav.setAttribute("aria-label", "Mobile quick navigation");
+
+    items.forEach((item) => {
+      const link = document.createElement("a");
+      link.className = "mobile-app-nav__item";
+      if (item.key === activeKey) {
+        link.classList.add("is-active");
+        link.setAttribute("aria-current", "page");
+      }
+
+      link.href = item.href;
+      link.innerHTML = `<span class="mobile-app-nav__icon ${item.iconClass}" aria-hidden="true"></span><span class="mobile-app-nav__label">${item.label}</span>`;
+      nav.appendChild(link);
+    });
+
+    if (primaryHamburger) {
+      const menuButton = document.createElement("button");
+      menuButton.type = "button";
+      menuButton.className = "mobile-app-nav__item mobile-app-nav__item--menu";
+      menuButton.setAttribute("aria-label", "Open site menu");
+      menuButton.innerHTML =
+        '<span class="mobile-app-nav__icon icon-bars" aria-hidden="true"></span><span class="mobile-app-nav__label">Menu</span>';
+      menuButton.addEventListener("click", () => {
+        primaryHamburger.click();
+      });
+      nav.appendChild(menuButton);
+    }
+
+    footer.appendChild(nav);
+  }
+
+  function getPageRootPrefix(pathname) {
+    if (pathname.includes("/pages/pathways/")) {
+      return "../../";
+    }
+
+    if (pathname.includes("/pages/")) {
+      return "../";
+    }
+
+    return "";
+  }
+
+  function getMobileAppNavActiveKey(pathname) {
+    if (
+      pathname.includes("/pages/learning-pathways.html") ||
+      pathname.includes("/pages/pathways/")
+    ) {
+      return "web";
+    }
+
+    if (pathname.includes("/pages/ntentan-universe.html")) {
+      return "universe";
+    }
+
+    if (
+      pathname.includes("/pages/store.html") ||
+      pathname.includes("/pages/orders-admin-desk.html")
+    ) {
+      return "store";
+    }
+
+    if (pathname.includes("/pages/contact.html")) {
+      return "contact";
+    }
+
+    return "home";
   }
 
   function initRevealAnimations() {
