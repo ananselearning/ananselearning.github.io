@@ -110,9 +110,22 @@
             document.getElementById('export-btn').addEventListener('click', () => { const visible = rows.filter(r => r.style.display !== 'none'); const headers = ['Order ID', 'Customer', 'Country', 'Items', 'Status']; const data = [headers.join(',')].concat(visible.map(r => Array.from(r.children).map(c => '"' + c.textContent.replace(/"/g, '""') + '"').join(','))); const blob = new Blob([data.join('\n')], { type: 'text/csv;charset=utf-8;' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ananse-orders-by-destination.csv'; a.click(); URL.revokeObjectURL(a.href); });
         })();
     </script>
-    <footer>
-        <div class="container"><a href="store.html">Back to Store</a> · <a
-                href="https://www.instagram.com/ananselearning" target="_blank" rel="noopener">Instagram</a></div>
+            <footer>
+        <div class="container site-footer-grid">
+            <div class="footer-item">
+                <strong>Ananse Learning</strong>
+                <span>Airport West, 198 Osu Badu St, Accra</span>
+                <span>ananselearning@gmail.com · +233 244 840 042</span>
+            </div>
+            <div class="footer-item">
+                <span>Facebook: <a href="https://www.facebook.com/ananselearning" target="_blank" rel="noopener">@ananselearning</a></span>
+                <span>Instagram: <a href="https://www.instagram.com/ananselearning" target="_blank" rel="noopener">@ananselearning</a></span>
+            </div>
+            <div class="footer-item">
+                <span><a href="store.html">Shop</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a></span>
+                <span>Newsletter signup: Stay in the web</span>
+            </div>
+        </div>
     </footer>
     <script src="../assets/js/site-interactions.js"></script>
 </body>

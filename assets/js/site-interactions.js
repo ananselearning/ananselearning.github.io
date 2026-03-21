@@ -3,9 +3,13 @@
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
+  applyThemeFromStorage();
+
   document.addEventListener("DOMContentLoaded", () => {
+    initThemeMode();
     initMobileMenus();
     initWhatsAppPrefillLinks();
+    initNewsletterForms();
 
     if (!prefersReducedMotion) {
       initRevealAnimations();
@@ -15,6 +19,115 @@
 
     decorateInteractiveElements();
   });
+
+  function initThemeMode() {
+    const toggles = ensureThemeToggleButtons();
+    syncThemeToggleIcons(toggles);
+
+    toggles.forEach((toggle) => {
+      if (toggle.dataset.themeBound === "true") {
+        return;
+      }
+
+      toggle.addEventListener("click", () => {
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        applyTheme(isDark ? "light" : "dark", true);
+      });
+
+      toggle.dataset.themeBound = "true";
+    });
+  }
+
+  function applyThemeFromStorage() {
+    const savedTheme = localStorage.getItem("theme");
+    const initialTheme = savedTheme || "dark";
+    applyTheme(initialTheme, false);
+  }
+
+  function applyTheme(theme, persist) {
+    document.documentElement.setAttribute("data-theme", theme);
+    syncThemeToggleIcons();
+
+    if (persist) {
+      localStorage.setItem("theme", theme);
+    }
+  }
+
+  function ensureThemeToggleButtons() {
+    const allMenus = Array.from(
+      document.querySelectorAll(".main-menu .menu-list"),
+    );
+    if (!allMenus.length) {
+      return [];
+    }
+
+    const existingButtons = Array.from(
+      document.querySelectorAll("#theme-toggle, .theme-toggle"),
+    );
+
+    const normalizeButton = (button) => {
+      button.classList.add("theme-toggle");
+      button.type = "button";
+      button.id = "theme-toggle";
+      button.setAttribute("aria-label", "Toggle dark / light mode");
+      button.setAttribute("title", "Toggle dark / light mode");
+      return button;
+    };
+
+    const usedButtons = [];
+
+    allMenus.forEach((menuList, index) => {
+      let menuItem = menuList.querySelector(".theme-toggle-item");
+      let button =
+        menuItem?.querySelector("#theme-toggle, .theme-toggle") || null;
+
+      if (!button) {
+        const reusable = existingButtons.find(
+          (candidate) => !usedButtons.includes(candidate),
+        );
+        button = reusable || document.createElement("button");
+      }
+
+      button = normalizeButton(button);
+
+      if (!menuItem) {
+        menuItem = document.createElement("li");
+        menuItem.className = "menu-item theme-toggle-item";
+      }
+
+      menuItem.appendChild(button);
+      menuList.appendChild(menuItem);
+      usedButtons.push(button);
+
+      if (!menuList.id) {
+        menuList.id = `theme-nav-menu-${index + 1}`;
+      }
+    });
+
+    existingButtons.forEach((button) => {
+      if (!usedButtons.includes(button)) {
+        button.remove();
+      }
+    });
+
+    return usedButtons;
+  }
+
+  function syncThemeToggleIcons(targetButtons) {
+    const buttons =
+      targetButtons ||
+      Array.from(document.querySelectorAll("#theme-toggle, .theme-toggle"));
+    if (!buttons.length) {
+      return;
+    }
+
+    const isDark =
+      document.documentElement.getAttribute("data-theme") === "dark";
+    buttons.forEach((button) => {
+      button.textContent = isDark ? "🌙" : "☀️";
+    });
+  }
 
   function decorateInteractiveElements() {
     document.querySelectorAll(".btn-primary").forEach((button, index) => {
@@ -349,5 +462,51 @@
       .map((part) => part.trim())
       .filter(Boolean);
     return segments[segments.length - 1] || "website";
+  }
+
+  function initNewsletterForms() {
+    const forms = Array.from(
+      document.querySelectorAll(".newsletter-signup-form"),
+    );
+    if (!forms.length) {
+      return;
+    }
+
+    forms.forEach((form) => {
+      if (form.dataset.newsletterBound === "true") {
+        return;
+      }
+
+      const emailInput = form.querySelector('input[type="email"]');
+      const feedback = form.querySelector(".footer-feedback");
+      if (!emailInput) {
+        return;
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (!emailInput.checkValidity()) {
+          if (feedback) {
+            feedback.textContent = "Enter a valid email address to sign up.";
+            feedback.classList.remove("is-success");
+            feedback.classList.add("is-error");
+          }
+          emailInput.reportValidity();
+          return;
+        }
+
+        if (feedback) {
+          feedback.textContent =
+            "Thanks. You are on the list for newsletter updates.";
+          feedback.classList.remove("is-error");
+          feedback.classList.add("is-success");
+        }
+
+        form.reset();
+      });
+
+      form.dataset.newsletterBound = "true";
+    });
   }
 })();
