@@ -212,6 +212,31 @@ body>* {
   text-shadow: 0 0 15px rgba(115, 201, 173, 0.55);
 }
 
+[data-theme="dark"] #header,
+[data-theme="dark"] #header-wrap {
+  background: #0d2225;
+}
+
+[data-theme="dark"] .main-logo a,
+[data-theme="dark"] .main-menu ul.menu-list a,
+[data-theme="dark"] .main-menu .menu-list .theme-toggle-item .theme-toggle {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .menu-item.active a {
+  color: #ffffff !important;
+  text-shadow: none;
+}
+
+[data-theme="dark"] .hamburger {
+  background: #102a2d;
+  border-color: #2a5559;
+}
+
+[data-theme="dark"] .hamburger .bar {
+  background: #ffffff;
+}
+
 .page-hero {
   background: linear-gradient(120deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
   min-height: 90vh;
