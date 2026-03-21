@@ -2,12 +2,19 @@
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
+  let hasInitialized = false;
 
   applyThemeFromStorage();
 
-  document.addEventListener("DOMContentLoaded", () => {
+  const initializePageInteractions = () => {
+    if (hasInitialized) {
+      return;
+    }
+    hasInitialized = true;
+
     initThemeMode();
     initMobileMenus();
+    initPageImagery();
     initWhatsAppPrefillLinks();
     initNewsletterForms();
 
@@ -18,7 +25,13 @@
     }
 
     decorateInteractiveElements();
-  });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializePageInteractions);
+  } else {
+    initializePageInteractions();
+  }
 
   function initThemeMode() {
     const toggles = ensureThemeToggleButtons();
@@ -37,6 +50,173 @@
 
       toggle.dataset.themeBound = "true";
     });
+  }
+
+  function initPageImagery() {
+    if (document.body.classList.contains("store-page")) {
+      return;
+    }
+
+    const path = window.location.pathname;
+    const imageConfig = getPageImageConfig(path);
+    if (!imageConfig) {
+      return;
+    }
+
+    const assetsPrefix = getAssetsPrefix(path);
+    const hero = document.querySelector(".page-hero");
+
+    if (hero && imageConfig.hero) {
+      const heroImageUrl = `${assetsPrefix}/images/page_images/${imageConfig.hero}`;
+      hero.classList.add("has-photo-hero");
+      hero.style.backgroundImage = `linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%), url("${heroImageUrl}")`;
+    }
+
+    if (!imageConfig.section) {
+      return;
+    }
+
+    const firstSectionContainer = document.querySelector(
+      ".section-block .container",
+    );
+    if (!firstSectionContainer) {
+      return;
+    }
+
+    if (firstSectionContainer.querySelector(".page-feature-visual")) {
+      return;
+    }
+
+    const figure = document.createElement("figure");
+    figure.className = "page-feature-visual";
+
+    const image = document.createElement("img");
+    image.src = `${assetsPrefix}/images/page_images/${imageConfig.section}`;
+    image.alt = imageConfig.sectionAlt || "Ananse Learning visual";
+    image.loading = "lazy";
+
+    figure.appendChild(image);
+    firstSectionContainer.appendChild(figure);
+  }
+
+  function getAssetsPrefix(pathname) {
+    if (pathname.includes("/pages/pathways/")) {
+      return "../../assets";
+    }
+    if (pathname.includes("/pages/")) {
+      return "../assets";
+    }
+    return "assets";
+  }
+
+  function getPageImageConfig(pathname) {
+    const imageMap = [
+      {
+        page: "/index.html",
+        hero: "hero-home-family-reading.jpg",
+        section: null,
+        sectionAlt: "",
+      },
+      {
+        page: "/pages/about.html",
+        hero: "hero-about-learning-journey.jpg",
+        section: null,
+        sectionAlt: "",
+      },
+      {
+        page: "/pages/contact.html",
+        hero: "hero-contact-community.jpg",
+        section: "section-contact-reading.jpg",
+        sectionAlt: "Family storytelling and connection",
+      },
+      {
+        page: "/pages/learning-pathways.html",
+        hero: "hero-learning-pathways.jpg",
+        section: "section-learning-pathways.jpg",
+        sectionAlt: "Learning pathways visual",
+      },
+      {
+        page: "/pages/ntentan-universe.html",
+        hero: "hero-ntentan-universe.jpg",
+        section: "section-ntentan-story.jpg",
+        sectionAlt: "Story world and imagination",
+      },
+      {
+        page: "/pages/studiomansa.html",
+        hero: "hero-studio-mansa.jpg",
+        section: "section-studio-mansa.jpg",
+        sectionAlt: "Creative studio storytelling visual",
+      },
+      {
+        page: "/pages/qr-holding-page.html",
+        hero: "hero-qr-coming-soon.jpg",
+        section: "section-learning-pathways.jpg",
+        sectionAlt: "Coming soon visual",
+      },
+      {
+        page: "/pages/orders-admin-desk.html",
+        hero: "hero-orders-admin.jpg",
+      },
+      {
+        page: "/pages/pathways/pathway-architecture.html",
+        hero: "pathway-architecture.jpg",
+        section: "section-art-design.jpg",
+        sectionAlt: "Architecture pathway visual",
+      },
+      {
+        page: "/pages/pathways/pathway-art-and-design.html",
+        hero: "pathway-art-design.jpg",
+        section: "section-art-design.jpg",
+        sectionAlt: "Art and design pathway visual",
+      },
+      {
+        page: "/pages/pathways/pathway-food-and-culture.html",
+        hero: "pathway-food-culture.jpg",
+        section: "section-food-culture.jpg",
+        sectionAlt: "Food and culture pathway visual",
+      },
+      {
+        page: "/pages/pathways/pathway-history-and-heritage.html",
+        hero: "pathway-history-heritage.jpg",
+        section: "section-history-heritage.jpg",
+        sectionAlt: "History and heritage pathway visual",
+      },
+      {
+        page: "/pages/pathways/pathway-literature.html",
+        hero: "pathway-literature.jpg",
+        section: "section-literature.jpg",
+        sectionAlt: "Literature pathway visual",
+      },
+      {
+        page: "/pages/pathways/pathway-research.html",
+        hero: "pathway-research.jpg",
+        section: "section-research.jpg",
+        sectionAlt: "Research pathway visual",
+      },
+      {
+        page: "/pages/pathways/pathway-sustainability.html",
+        hero: "pathway-sustainability.jpg",
+        section: "section-sustainability.jpg",
+        sectionAlt: "Sustainability pathway visual",
+      },
+      {
+        page: "/pages/pathways/pathway-technology.html",
+        hero: "pathway-technology.jpg",
+        section: "section-technology.jpg",
+        sectionAlt: "Technology pathway visual",
+      },
+    ];
+
+    const exactMatch = imageMap.find((item) => pathname.endsWith(item.page));
+    if (exactMatch) {
+      return exactMatch;
+    }
+
+    if (pathname === "/" || pathname.endsWith("/ananselearning.github.io")) {
+      return imageMap.find((item) => item.page === "/index.html") || null;
+    }
+
+    return null;
   }
 
   function applyThemeFromStorage() {
@@ -160,6 +340,7 @@
         menu.classList.remove("menu-open");
         if (menuList) {
           menuList.setAttribute("aria-hidden", "true");
+          menuList.hidden = true;
         }
         if (hamburger) {
           hamburger.setAttribute("aria-expanded", "false");
@@ -172,6 +353,8 @@
       if (!menuList) {
         return;
       }
+
+      menu.classList.add("mobile-nav-enhanced");
 
       let hamburger = menu.querySelector(".hamburger");
       if (!hamburger) {
@@ -199,13 +382,16 @@
 
       if (isMobileViewport()) {
         menuList.setAttribute("aria-hidden", "true");
+        menuList.hidden = true;
       } else {
         menuList.setAttribute("aria-hidden", "false");
+        menuList.hidden = false;
       }
 
       const closeMenu = () => {
         menu.classList.remove("menu-open");
         menuList.setAttribute("aria-hidden", "true");
+        menuList.hidden = true;
         hamburger.setAttribute("aria-expanded", "false");
       };
 
@@ -213,6 +399,7 @@
         closeAllMenus();
         menu.classList.add("menu-open");
         menuList.setAttribute("aria-hidden", "false");
+        menuList.hidden = false;
         hamburger.setAttribute("aria-expanded", "true");
       };
 
@@ -274,6 +461,7 @@
             const menuList = menu.querySelector(".menu-list");
             if (menuList) {
               menuList.setAttribute("aria-hidden", "false");
+              menuList.hidden = false;
             }
           });
         } else {
@@ -281,6 +469,7 @@
             const menuList = menu.querySelector(".menu-list");
             if (menuList && !menu.classList.contains("menu-open")) {
               menuList.setAttribute("aria-hidden", "true");
+              menuList.hidden = true;
             }
           });
         }
