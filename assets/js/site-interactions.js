@@ -154,10 +154,6 @@
         sectionAlt: "Coming soon visual",
       },
       {
-        page: "/pages/orders-admin-desk.html",
-        hero: "hero-orders-admin.jpg",
-      },
-      {
         page: "/pages/pathways/pathway-architecture.html",
         hero: "pathway-architecture.jpg",
         section: "section-art-design.jpg",
@@ -332,21 +328,6 @@
     }
 
     const isMobileViewport = () => window.innerWidth <= 992;
-    const updateMobileMenuTop = () => {
-      const headerWrap = document.querySelector("#header-wrap");
-      const header = document.querySelector("#header");
-      const anchor = headerWrap || header;
-
-      if (!anchor) {
-        document.documentElement.style.setProperty("--mobile-menu-top", "0px");
-        return;
-      }
-
-      const anchorBottom = Math.max(0, Math.round(anchor.getBoundingClientRect().bottom));
-      document.documentElement.style.setProperty("--mobile-menu-top", `${anchorBottom}px`);
-    };
-
-    updateMobileMenuTop();
     let backdrop = document.querySelector(".mobile-nav-backdrop");
 
     if (!backdrop) {
@@ -498,7 +479,6 @@
 
       const openMenu = () => {
         closeAllMenus();
-        updateMobileMenuTop();
         menu.classList.add("menu-open");
         menuList.setAttribute("aria-hidden", "false");
         menuList.hidden = false;
@@ -562,7 +542,6 @@
     window.addEventListener(
       "resize",
       () => {
-        updateMobileMenuTop();
         if (!isMobileViewport()) {
           closeAllMenus();
           menus.forEach((menu) => {
@@ -595,18 +574,6 @@
         }
 
         syncBackdrop();
-      },
-      { passive: true },
-    );
-
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!isMobileViewport()) {
-          return;
-        }
-
-        updateMobileMenuTop();
       },
       { passive: true },
     );
