@@ -419,6 +419,21 @@ body>* {
   font-weight: 700;
 }
 
+.store-page .catalogue-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.store-page .catalogue-card .price {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.store-page .catalogue-card > a.btn.btn-sm.btn-primary {
+  margin-top: 0.65rem;
+  align-self: flex-start;
+}
+
 .status-pill {
   display: inline-block;
   border: 1px solid var(--color-coral);
