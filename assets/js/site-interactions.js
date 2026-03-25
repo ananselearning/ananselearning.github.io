@@ -769,31 +769,90 @@
         return;
       }
 
+      let feedbackTimer = null;
+
+      const setFeedbackMessage = (message, status) => {
+        if (!feedback) {
+          return;
+        }
+
+        feedback.textContent = message;
+        feedback.classList.remove("is-success", "is-error");
+        if (status) {
+          feedback.classList.add(status);
+        }
+
+        if (feedbackTimer) {
+          window.clearTimeout(feedbackTimer);
+          feedbackTimer = null;
+        }
+
+        feedbackTimer = window.setTimeout(() => {
+          feedback.textContent = "";
+          feedback.classList.remove("is-success", "is-error");
+        }, 4500);
+      };
+
       const emailInput = form.querySelector('input[type="email"]');
       const feedback = form.querySelector(".footer-feedback");
       if (!emailInput) {
         return;
       }
 
-      form.addEventListener("submit", (event) => {
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         if (!emailInput.checkValidity()) {
-          if (feedback) {
-            feedback.textContent = "Enter a valid email address to sign up.";
-            feedback.classList.remove("is-success");
-            feedback.classList.add("is-error");
-          }
+          setFeedbackMessage(
+            "Enter a valid email address to sign up.",
+            "is-error",
+          );
           emailInput.reportValidity();
           return;
         }
 
-        if (feedback) {
-          feedback.textContent =
-            "Thanks. You are on the list for newsletter updates.";
-          feedback.classList.remove("is-error");
-          feedback.classList.add("is-success");
+        const submitEndpoint = form.dataset.submitEndpoint;
+        if (submitEndpoint) {
+          try {
+            const payload = new URLSearchParams({
+              email: emailInput.value,
+            });
+
+            const response = await fetch(submitEndpoint, {
+              method: "POST",
+              mode: "no-cors",
+              body: payload,
+            });
+
+            let message = "Thanks. Your newsletter signup was submitted.";
+
+            if (response.type !== "opaque") {
+              try {
+                const result = await response.json();
+                message = result.message || message;
+              } catch (parseError) {
+                message = "Submitted.";
+              }
+            }
+
+            if (feedback) {
+              setFeedbackMessage(message, "is-success");
+            }
+
+            form.reset();
+          } catch (requestError) {
+            const errorMessage =
+              "Unable to submit right now. Please try again.";
+            setFeedbackMessage(errorMessage, "is-error");
+          }
+
+          return;
         }
+
+        setFeedbackMessage(
+          "Thanks. You are on the list for newsletter updates.",
+          "is-success",
+        );
 
         form.reset();
       });

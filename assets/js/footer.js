@@ -50,7 +50,11 @@
         </div>
         <div class="footer-item">
           <span><a href="${prefix}store.html">Shop</a> · <a href="${prefix}about.html">About</a> · <a href="${prefix}contact.html">Contact</a></span>
-          <span>Newsletter signup: Stay in the web</span>
+          <form id="emailForm" class="newsletter-signup-form footer-inline-newsletter" data-submit-endpoint="https://script.google.com/macros/s/AKfycbwpeqmZoyCXB-46-564Rby5vaeqbc55fM0VKT36LdTvAFjQUcxlhUETGGw2KtPedV9Ljw/exec" novalidate>
+            <p class="footer-feedback footer-inline-feedback" aria-live="polite"></p>
+            <input type="email" id="email" name="email" required placeholder="Enter email for Newsletter signup" aria-label="enter your email for Newsletter signup">
+            <button type="submit">Submit</button>
+          </form>
         </div>
       `;
     });
