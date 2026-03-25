@@ -1737,6 +1737,10 @@ footer .footer-social-icons .social-icon-link .social-icon-svg {
     padding-bottom: calc(136px + env(safe-area-inset-bottom));
   }
 
+  body.footer-mobile-collapsed {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom));
+  }
+
   .container,
   .container-fluid {
     padding-left: 16px;
@@ -1753,6 +1757,10 @@ footer .footer-social-icons .social-icon-link .social-icon-svg {
     backdrop-filter: blur(12px);
     align-items: stretch;
     overflow: visible;
+  }
+
+  footer.is-mobile-collapsed {
+    height: calc(58px + env(safe-area-inset-bottom));
   }
 
   [data-theme="dark"] footer {
@@ -1772,6 +1780,12 @@ footer .footer-social-icons .social-icon-link .social-icon-svg {
     align-content: center;
     justify-items: center;
     padding: 8px 12px;
+  }
+
+  footer.is-mobile-collapsed .container.site-footer-grid {
+    grid-template-areas: "social";
+    align-content: center;
+    padding: 6px 12px;
   }
 
   footer .footer-item {
@@ -1798,24 +1812,51 @@ footer .footer-social-icons .social-icon-link .social-icon-svg {
     gap: 0.3rem;
   }
 
+  footer.is-mobile-collapsed .footer-item:first-child,
+  footer.is-mobile-collapsed .footer-item:last-child {
+    display: none;
+  }
+
+  footer.is-mobile-collapsed .footer-social-icons {
+    width: auto;
+    justify-content: center !important;
+  }
+
   footer .footer-item:last-child > span {
     width: 100%;
     text-align: center;
   }
 
   footer .footer-inline-newsletter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.35rem;
+    row-gap: 0.2rem;
     max-width: 280px;
   }
 
   footer .footer-inline-newsletter input[type="email"] {
+    grid-column: 1;
+    grid-row: 1;
     width: 170px;
   }
 
+  footer .footer-inline-newsletter button[type="submit"] {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
   footer .footer-inline-feedback {
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    left: auto;
+    bottom: auto;
+    transform: none;
     text-align: center;
-    max-width: 220px;
+    width: 100%;
+    max-width: 100%;
   }
 
   #header .row.align-items-center {

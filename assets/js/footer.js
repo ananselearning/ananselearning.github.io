@@ -2,6 +2,8 @@
   const FOOTER_EMAIL = "ananselearning@gmail.com";
   const BROWSER_EMAIL_COMPOSE_URL =
     "https://mail.google.com/mail/?view=cm&fs=1&to=ananselearning@gmail.com";
+  const MOBILE_FOOTER_COLLAPSE_CLASS = "is-mobile-collapsed";
+  const MOBILE_BODY_FOOTER_COLLAPSE_CLASS = "footer-mobile-collapsed";
 
   function getFooterLinkPrefix(pathname) {
     if (pathname.includes("/pages/pathways/")) {
@@ -64,6 +66,7 @@
     });
 
     bindEmailAppFallback();
+    initMobileFooterCollapse();
   }
 
   function bindEmailAppFallback() {
@@ -123,6 +126,61 @@
     }, 980);
 
     window.location.href = gmailAppUrl;
+  }
+
+  function initMobileFooterCollapse() {
+    const footer = document.querySelector("footer");
+    if (!footer || footer.dataset.mobileCollapseBound === "true") {
+      return;
+    }
+
+    const collapseFooter = () => {
+      if (!isMobileFooterViewport()) {
+        return;
+      }
+      footer.classList.add(MOBILE_FOOTER_COLLAPSE_CLASS);
+      document.body.classList.add(MOBILE_BODY_FOOTER_COLLAPSE_CLASS);
+    };
+
+    const expandFooter = () => {
+      footer.classList.remove(MOBILE_FOOTER_COLLAPSE_CLASS);
+      document.body.classList.remove(MOBILE_BODY_FOOTER_COLLAPSE_CLASS);
+    };
+
+    const collapseOnPageInteraction = (event) => {
+      if (!isMobileFooterViewport()) {
+        return;
+      }
+
+      if (event && footer.contains(event.target)) {
+        return;
+      }
+
+      collapseFooter();
+    };
+
+    footer.addEventListener("click", () => {
+      if (!isMobileFooterViewport()) {
+        return;
+      }
+
+      expandFooter();
+    });
+
+    document.addEventListener("pointerdown", collapseOnPageInteraction, true);
+    window.addEventListener("scroll", collapseFooter, { passive: true });
+    window.addEventListener("touchmove", collapseFooter, { passive: true });
+    window.addEventListener("resize", () => {
+      if (!isMobileFooterViewport()) {
+        expandFooter();
+      }
+    });
+
+    footer.dataset.mobileCollapseBound = "true";
+  }
+
+  function isMobileFooterViewport() {
+    return window.matchMedia("(max-width: 992px)").matches;
   }
 
   if (document.readyState === "loading") {
