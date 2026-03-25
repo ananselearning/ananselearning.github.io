@@ -1,4 +1,8 @@
 (() => {
+  const FOOTER_EMAIL = "ananselearning@gmail.com";
+  const BROWSER_EMAIL_COMPOSE_URL =
+    "https://mail.google.com/mail/?view=cm&fs=1&to=ananselearning@gmail.com";
+
   function getFooterLinkPrefix(pathname) {
     if (pathname.includes("/pages/pathways/")) {
       return "../";
@@ -36,7 +40,7 @@
               <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"></circle>
             </svg>
           </a>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ananselearning@gmail.com" target="_blank" rel="noopener" class="social-icon-link" aria-label="Email">
+          <a href="${BROWSER_EMAIL_COMPOSE_URL}" target="_blank" rel="noopener" class="social-icon-link js-email-app-link" aria-label="Email">
             <svg class="social-icon-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <rect x="3" y="5" width="18" height="14" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
               <path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -58,6 +62,67 @@
         </div>
       `;
     });
+
+    bindEmailAppFallback();
+  }
+
+  function bindEmailAppFallback() {
+    const emailLinks = Array.from(
+      document.querySelectorAll(".js-email-app-link"),
+    );
+    if (!emailLinks.length) {
+      return;
+    }
+
+    emailLinks.forEach((link) => {
+      if (link.dataset.emailAppBound === "true") {
+        return;
+      }
+
+      link.addEventListener("click", (event) => {
+        if (!isMobileDevice()) {
+          return;
+        }
+
+        event.preventDefault();
+        openEmailAppWithFallback();
+      });
+
+      link.dataset.emailAppBound = "true";
+    });
+  }
+
+  function isMobileDevice() {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "");
+  }
+
+  function openEmailAppWithFallback() {
+    const gmailAppUrl = `googlegmail://co?to=${encodeURIComponent(FOOTER_EMAIL)}`;
+    const mailtoUrl = `mailto:${FOOTER_EMAIL}`;
+    let appOpened = false;
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        appOpened = true;
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    window.setTimeout(() => {
+      if (!appOpened) {
+        window.location.href = mailtoUrl;
+      }
+    }, 260);
+
+    window.setTimeout(() => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      if (!appOpened) {
+        window.open(BROWSER_EMAIL_COMPOSE_URL, "_blank", "noopener");
+      }
+    }, 980);
+
+    window.location.href = gmailAppUrl;
   }
 
   if (document.readyState === "loading") {
