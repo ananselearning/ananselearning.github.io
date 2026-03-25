@@ -413,6 +413,21 @@ body>* {
   outline-offset: 3px;
 }
 
+/* Waitlist form inline feedback */
+.waitlist-feedback {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+.waitlist-feedback--success {
+  color: #2d7a4f;
+}
+
+.waitlist-feedback--error {
+  color: #b94040;
+}
+
 .catalogue-meta {
   font-size: 0.9rem;
   color: var(--muted-text-color);
@@ -1336,7 +1351,7 @@ footer {
   bottom: 0;
   width: 100%;
   z-index: 999;
-  overflow: hidden;
+  overflow: visible;
   transition: background 0.35s ease;
 }
 
@@ -1455,14 +1470,17 @@ footer .footer-inline-feedback {
   position: absolute;
   left: 0;
   bottom: calc(100% + 2px);
-  width: max-content;
-  max-width: 190px;
+  width: auto;
+  max-width: 320px;
   margin: 0;
   min-height: 0;
   font-size: 0.62rem;
   line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
   color: var(--muted-text-color);
   text-align: left;
+  z-index: 2;
 }
 
 footer .footer-inline-feedback.is-success {

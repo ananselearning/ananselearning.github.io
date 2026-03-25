@@ -74,15 +74,21 @@
                 <div class="col-md-5">
                     <div class="catalogue-card">
                         <h3>Join the waitlist</h3>
-                        <form><label for="wait-name">Name</label><input id="wait-name" class="form-control mb-3"
-                                type="text" placeholder="Your name"><label for="wait-email">Email</label><input
-                                id="wait-email" class="form-control mb-3" type="email" placeholder="Your email"><label
-                                for="wait-interest">I am a...</label><select id="wait-interest"
-                                class="form-select mb-3">
-                                <option>Parent or caregiver</option>
-                                <option>Educator or school</option>
-                                <option>Institution or partner</option>
-                            </select><button class="btn btn-primary" type="button">Join the waitlist →</button></form>
+                        <form id="waitlistForm">
+                            <input id="wait-name" class="form-control mb-3" type="text" name="name"
+                                placeholder="Your name" required>
+                            <input id="wait-email" class="form-control mb-3" type="email" name="email"
+                                placeholder="Your email" required>
+                            <select id="wait-interest" class="form-select mb-3" name="role" required>
+                                <option value="">Select one</option>
+                                <option value="Parent or caregiver">Parent or caregiver</option>
+                                <option value="Educator or school">Educator or school</option>
+                                <option value="Institution or partner">Institution or partner</option>
+                            </select>
+                            <button id="waitlistSubmitBtn" class="btn btn-primary" type="submit">Join the
+                                waitlist</button>
+                            <p id="waitlistFeedback" class="waitlist-feedback" aria-live="polite"></p>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -93,6 +99,49 @@
         <div class="container site-footer-grid"></div>
 
     </footer>
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbynivbtKvDqReFNDZnjE3GfEJgZiq4RV-nsVaks2Tcx_aOajuJmGHFcyTkpYOF0VQ4_/exec';
+
+        document.getElementById('waitlistForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const btn = document.getElementById('waitlistSubmitBtn');
+            const feedback = document.getElementById('waitlistFeedback');
+
+            const payload = {
+                name: form.name.value,
+                email: form.email.value,
+                role: form.role.value
+            };
+
+            btn.disabled = true;
+            btn.textContent = 'Submitting…';
+            feedback.textContent = '';
+            feedback.className = 'waitlist-feedback';
+
+            try {
+                const body = new URLSearchParams(payload);
+
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body
+                });
+
+                feedback.textContent = 'Thanks! You have joined the waitlist.';
+                feedback.classList.add('waitlist-feedback--success');
+                form.reset();
+                btn.textContent = 'Join the waitlist';
+                btn.disabled = false;
+            } catch (error) {
+                feedback.textContent = 'Network error. Please try again.';
+                feedback.classList.add('waitlist-feedback--error');
+                btn.textContent = 'Join the waitlist';
+                btn.disabled = false;
+            }
+        });
+    </script>
     <script src="../assets/js/footer.js"></script>
     <script src="../assets/js/site-interactions.js"></script>
 </body>
