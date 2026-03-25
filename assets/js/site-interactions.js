@@ -1,6 +1,6 @@
 (() => {
   const VISIT_LOG_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbyKaVq_vsKW7JqOLqMdQ8tdCt34kXfasd71KzgL-CtAu7970YuGo6vTxowgGZI7oVFPJg/exec";
+    "https://script.google.com/macros/s/AKfycbyTuNqApzg1PWpKA8kVH7p6N15-ByxchGCJCcsdNsoy-7L5U8sGVnjITtWOr3jBywYe_g/exec";
   const VISIT_LOG_SUPPRESS_KEY = "visit_log_suppressed";
 
   const prefersReducedMotion = window.matchMedia(
