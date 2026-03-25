@@ -4,6 +4,7 @@
     "https://mail.google.com/mail/?view=cm&fs=1&to=ananselearning@gmail.com";
   const MOBILE_FOOTER_COLLAPSE_CLASS = "is-mobile-collapsed";
   const MOBILE_BODY_FOOTER_COLLAPSE_CLASS = "footer-mobile-collapsed";
+  const MOBILE_FOOTER_INITIAL_EXPANDED_MS = 3000;
 
   function getFooterLinkPrefix(pathname) {
     if (pathname.includes("/pages/pathways/")) {
@@ -134,8 +135,10 @@
       return;
     }
 
+    let canAutoCollapse = !isMobileFooterViewport();
+
     const collapseFooter = () => {
-      if (!isMobileFooterViewport()) {
+      if (!isMobileFooterViewport() || !canAutoCollapse) {
         return;
       }
       footer.classList.add(MOBILE_FOOTER_COLLAPSE_CLASS);
@@ -172,9 +175,21 @@
     window.addEventListener("touchmove", collapseFooter, { passive: true });
     window.addEventListener("resize", () => {
       if (!isMobileFooterViewport()) {
+        canAutoCollapse = true;
         expandFooter();
       }
     });
+
+    if (isMobileFooterViewport()) {
+      expandFooter();
+      window.setTimeout(() => {
+        if (!isMobileFooterViewport()) {
+          return;
+        }
+        canAutoCollapse = true;
+        collapseFooter();
+      }, MOBILE_FOOTER_INITIAL_EXPANDED_MS);
+    }
 
     footer.dataset.mobileCollapseBound = "true";
   }
