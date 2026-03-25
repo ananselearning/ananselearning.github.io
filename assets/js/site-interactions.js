@@ -1,4 +1,8 @@
 (() => {
+  const VISIT_LOG_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbyKaVq_vsKW7JqOLqMdQ8tdCt34kXfasd71KzgL-CtAu7970YuGo6vTxowgGZI7oVFPJg/exec";
+  const VISIT_LOG_SUPPRESS_KEY = "visit_log_suppressed";
+
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
@@ -17,6 +21,7 @@
     initPageImagery();
     initWhatsAppPrefillLinks();
     initNewsletterForms();
+    initVisitLogging();
 
     if (!prefersReducedMotion) {
       initRevealAnimations();
@@ -754,6 +759,112 @@
       .map((part) => part.trim())
       .filter(Boolean);
     return segments[segments.length - 1] || "website";
+  }
+
+  function initVisitLogging() {
+    try {
+      if (sessionStorage.getItem(VISIT_LOG_SUPPRESS_KEY) === "true") {
+        return;
+      }
+    } catch (storageError) {
+      // Ignore storage access issues and attempt logging.
+    }
+
+    logVisit().catch(() => {
+      suppressVisitLoggingForSession();
+    });
+  }
+
+  async function logVisit() {
+    const storageKey = "site_client_id";
+    let clientId = "";
+
+    try {
+      clientId = localStorage.getItem(storageKey) || "";
+      if (!clientId) {
+        clientId =
+          window.crypto && typeof window.crypto.randomUUID === "function"
+            ? window.crypto.randomUUID()
+            : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        localStorage.setItem(storageKey, clientId);
+      }
+    } catch (storageError) {
+      clientId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    const payload = {
+      path: `${window.location.pathname}${window.location.search}${window.location.hash}`,
+      url: window.location.href,
+      userAgent: navigator.userAgent,
+      clientId,
+    };
+
+    const posted = await postVisitLog(payload);
+    if (posted) {
+      return;
+    }
+
+    const getFallbackSent = await sendVisitLogByGet(payload);
+    if (!getFallbackSent) {
+      throw new Error("Visit log transports failed");
+    }
+  }
+
+  async function postVisitLog(payload) {
+    try {
+      const body = JSON.stringify(payload);
+      await fetch(VISIT_LOG_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+        body,
+        keepalive: true,
+        credentials: "omit",
+        cache: "no-store",
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async function sendVisitLogByGet(payload) {
+    try {
+      const url = new URL(VISIT_LOG_ENDPOINT);
+      url.searchParams.set("path", payload.path);
+      url.searchParams.set("url", payload.url);
+      url.searchParams.set("userAgent", payload.userAgent);
+      url.searchParams.set("clientId", payload.clientId);
+
+      if (navigator.sendBeacon) {
+        const beaconSent = navigator.sendBeacon(url.toString());
+        if (beaconSent) {
+          return true;
+        }
+      }
+
+      await fetch(url.toString(), {
+        method: "GET",
+        mode: "no-cors",
+        keepalive: true,
+        credentials: "omit",
+        cache: "no-store",
+      });
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function suppressVisitLoggingForSession() {
+    try {
+      sessionStorage.setItem(VISIT_LOG_SUPPRESS_KEY, "true");
+    } catch (storageError) {
+      // Ignore storage access issues.
+    }
   }
 
   function initNewsletterForms() {
