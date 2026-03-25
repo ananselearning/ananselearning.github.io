@@ -797,6 +797,7 @@
       url: window.location.href,
       userAgent: navigator.userAgent,
       clientId,
+      timestampGmt: getGmtTimestamp(),
     };
 
     const posted = await postVisitLog(payload);
@@ -837,6 +838,7 @@
       url.searchParams.set("url", payload.url);
       url.searchParams.set("userAgent", payload.userAgent);
       url.searchParams.set("clientId", payload.clientId);
+      url.searchParams.set("timestampGmt", payload.timestampGmt);
 
       if (navigator.sendBeacon) {
         const beaconSent = navigator.sendBeacon(url.toString());
@@ -865,6 +867,10 @@
     } catch (storageError) {
       // Ignore storage access issues.
     }
+  }
+
+  function getGmtTimestamp() {
+    return new Date().toISOString();
   }
 
   function initNewsletterForms() {
@@ -925,8 +931,10 @@
         const submitEndpoint = form.dataset.submitEndpoint;
         if (submitEndpoint) {
           try {
+            const timestampGmt = getGmtTimestamp();
             const payload = new URLSearchParams({
               email: emailInput.value,
+              timestampGmt,
             });
 
             const response = await fetch(submitEndpoint, {
