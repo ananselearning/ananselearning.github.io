@@ -19,6 +19,7 @@
     initThemeMode();
     initMobileMenus();
     initPageImagery();
+    initHomeProductHighlights();
     initWhatsAppPrefillLinks();
     initNewsletterForms();
     initVisitLogging();
@@ -671,6 +672,210 @@
       url.searchParams.set("text", message);
       link.setAttribute("href", url.toString());
     });
+  }
+
+  function initHomeProductHighlights() {
+    if (!isHomePath(window.location.pathname)) {
+      return;
+    }
+
+    const highlightSection = Array.from(
+      document.querySelectorAll(".section-block.alt"),
+    ).find((section) => {
+      const heading = section.querySelector("h2");
+      return (heading?.textContent || "").includes("Product Highlights");
+    });
+
+    if (!highlightSection) {
+      return;
+    }
+
+    const cards = Array.from(
+      highlightSection.querySelectorAll(".catalogue-card"),
+    );
+    if (!cards.length) {
+      return;
+    }
+
+    const imagePreview = createHomeImagePreview();
+
+    cards.forEach((card) => {
+      if (card.dataset.homeHighlightBound === "true") {
+        return;
+      }
+
+      const title = (card.querySelector("h4")?.textContent || "").trim();
+      const explicitLink = card.querySelector('a[href^="https://paystack"]');
+      const paystackUrl =
+        explicitLink?.getAttribute("href") ||
+        getHomeHighlightPaystackUrl(title) ||
+        "https://paystack.shop/ananselearning";
+
+      card.classList.add("is-clickable-card");
+      card.setAttribute("role", "link");
+      card.setAttribute("tabindex", "0");
+
+      card.addEventListener("click", (event) => {
+        if (isHomePreviewTrigger(event.target)) {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleHomePreview(card, imagePreview);
+          return;
+        }
+
+        const interactiveTarget = event.target.closest(
+          "a, button, input, select, textarea, label",
+        );
+        if (interactiveTarget) {
+          return;
+        }
+
+        window.open(paystackUrl, "_blank", "noopener");
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+
+        const interactiveTarget = event.target.closest(
+          "a, button, input, select, textarea, label",
+        );
+        if (interactiveTarget) {
+          return;
+        }
+
+        event.preventDefault();
+        window.open(paystackUrl, "_blank", "noopener");
+      });
+
+      card.dataset.homeHighlightBound = "true";
+    });
+  }
+
+  function isHomePath(pathname) {
+    return (
+      pathname === "/" ||
+      pathname === "/index.html" ||
+      pathname.endsWith("/ananselearning.github.io")
+    );
+  }
+
+  function isHomePreviewTrigger(target) {
+    return Boolean(
+      target &&
+      target.closest("figure, .card-image-overlay, .quick-view-label"),
+    );
+  }
+
+  function toggleHomePreview(card, imagePreview) {
+    const image = card.querySelector("figure img");
+    if (!image) {
+      return;
+    }
+
+    const source = image.currentSrc || image.getAttribute("src") || "";
+    if (!source) {
+      return;
+    }
+
+    imagePreview.toggle(source, image.getAttribute("alt") || "Product preview");
+  }
+
+  function createHomeImagePreview() {
+    const existingOverlay = document.querySelector(".home-image-preview");
+    if (existingOverlay) {
+      const existingImage = existingOverlay.querySelector("img");
+      return {
+        toggle(source, altText) {
+          existingImage.src = source;
+          existingImage.alt = altText;
+          if (
+            existingOverlay.classList.contains("is-open") &&
+            existingImage.dataset.activeSource === source
+          ) {
+            existingOverlay.classList.remove("is-open");
+            existingOverlay.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("home-image-preview-open");
+            existingImage.dataset.activeSource = "";
+            return;
+          }
+
+          existingOverlay.classList.add("is-open");
+          existingOverlay.setAttribute("aria-hidden", "false");
+          document.body.classList.add("home-image-preview-open");
+          existingImage.dataset.activeSource = source;
+        },
+      };
+    }
+
+    const overlay = document.createElement("div");
+    overlay.className = "home-image-preview";
+    overlay.setAttribute("aria-hidden", "true");
+
+    const previewImage = document.createElement("img");
+    previewImage.className = "home-image-preview__image";
+    previewImage.alt = "";
+    previewImage.dataset.activeSource = "";
+
+    overlay.appendChild(previewImage);
+    document.body.appendChild(overlay);
+
+    function close() {
+      overlay.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("home-image-preview-open");
+      previewImage.dataset.activeSource = "";
+    }
+
+    function toggle(source, altText) {
+      if (
+        overlay.classList.contains("is-open") &&
+        previewImage.dataset.activeSource === source
+      ) {
+        close();
+        return;
+      }
+
+      previewImage.src = source;
+      previewImage.alt = altText;
+      previewImage.dataset.activeSource = source;
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("home-image-preview-open");
+    }
+
+    overlay.addEventListener("click", close);
+    previewImage.addEventListener("click", close);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && overlay.classList.contains("is-open")) {
+        close();
+      }
+    });
+
+    return {
+      toggle,
+    };
+  }
+
+  function getHomeHighlightPaystackUrl(title) {
+    const normalizedTitle = String(title || "")
+      .trim()
+      .toLowerCase();
+
+    if (normalizedTitle === "abcdawadawa") {
+      return "https://paystack.com/buy/ananselearning-book-abcdawadawa";
+    }
+
+    if (normalizedTitle.includes("design workbook")) {
+      return "https://paystack.com/buy/ananselearning-book-the-design-workbook-food--culture-book-";
+    }
+
+    if (normalizedTitle.includes("worlds they made")) {
+      return "https://paystack.com/buy/ananselearning-book-worlds-they-made";
+    }
+
+    return null;
   }
 
   function buildWhatsAppMessage(link, pageLabel) {
