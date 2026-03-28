@@ -101,6 +101,10 @@
           return;
         }
 
+        if (isDetailsAreaTarget(event.target)) {
+          return;
+        }
+
         const interactiveTarget = event.target.closest(
           "a, button, input, select, textarea, label",
         );
@@ -113,6 +117,17 @@
 
       card.addEventListener("keydown", (event) => {
         if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+
+        if (isDetailsAreaTarget(event.target)) {
+          return;
+        }
+
+        const interactiveTarget = event.target.closest(
+          "a, button, input, select, textarea, label",
+        );
+        if (interactiveTarget) {
           return;
         }
 
@@ -291,6 +306,10 @@
           return;
         }
 
+        if (isDetailsAreaTarget(event.target)) {
+          return;
+        }
+
         const interactiveTarget = event.target.closest(
           "a, button, input, select, textarea, label",
         );
@@ -306,6 +325,17 @@
           return;
         }
 
+        if (isDetailsAreaTarget(event.target)) {
+          return;
+        }
+
+        const interactiveTarget = event.target.closest(
+          "a, button, input, select, textarea, label",
+        );
+        if (interactiveTarget) {
+          return;
+        }
+
         event.preventDefault();
         window.open(url, "_blank", "noopener");
       });
@@ -317,6 +347,10 @@
       target &&
       target.closest("figure, .card-image-overlay, .quick-view-label"),
     );
+  }
+
+  function isDetailsAreaTarget(target) {
+    return Boolean(target && target.closest("details, summary"));
   }
 
   function toggleImagePreviewForCard(card) {
