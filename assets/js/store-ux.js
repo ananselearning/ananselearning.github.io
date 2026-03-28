@@ -113,10 +113,12 @@
           node.style.transform = "none";
         });
 
-      postersSection.querySelectorAll(".catalogue-card").forEach(function (card) {
-        card.classList.remove("is-hidden");
-        card.style.display = "flex";
-      });
+      postersSection
+        .querySelectorAll(".catalogue-card")
+        .forEach(function (card) {
+          card.classList.remove("is-hidden");
+          card.style.display = "flex";
+        });
 
       postersSection.querySelectorAll(".reveal-card").forEach(function (card) {
         card.classList.add("is-revealed");
@@ -126,14 +128,18 @@
       postersSection.style.opacity = "";
       postersSection.style.visibility = "";
 
-      postersSection.querySelectorAll(".reveal-on-scroll").forEach(function (node) {
-        node.style.opacity = "";
-        node.style.transform = "";
-      });
+      postersSection
+        .querySelectorAll(".reveal-on-scroll")
+        .forEach(function (node) {
+          node.style.opacity = "";
+          node.style.transform = "";
+        });
 
-      postersSection.querySelectorAll(".catalogue-card").forEach(function (card) {
-        card.style.display = "";
-      });
+      postersSection
+        .querySelectorAll(".catalogue-card")
+        .forEach(function (card) {
+          card.style.display = "";
+        });
     }
   }
 

@@ -244,6 +244,12 @@
   position: relative;
 }
 
+.catalogue-card figure img,
+.catalogue-card .card-image-overlay,
+.catalogue-card .quick-view-label {
+  cursor: zoom-in;
+}
+
 .card-body-content {
   padding: 0;
   display: flex;
@@ -296,6 +302,39 @@
 
 .catalogue-card:hover .quick-view-label {
   transform: scale(1.05);
+}
+
+.store-image-preview {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(9, 22, 24, 0.86);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.store-image-preview.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.store-image-preview__image {
+  max-width: min(92vw, 960px);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+  cursor: zoom-out;
+}
+
+body.store-image-preview-open {
+  overflow: hidden;
 }
 
 /* Card tags (Bilingual, Bestseller, etc.) */

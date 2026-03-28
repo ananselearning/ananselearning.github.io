@@ -10,6 +10,8 @@
     return;
   }
 
+  const imagePreview = createImagePreview();
+
   initStorePreviewPaystackTiles();
   initStockistCards();
 
@@ -92,6 +94,13 @@
       card.dataset.storeLinked = "true";
 
       card.addEventListener("click", (event) => {
+        if (isPreviewTrigger(event.target)) {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleImagePreviewForCard(card);
+          return;
+        }
+
         const interactiveTarget = event.target.closest(
           "a, button, input, select, textarea, label",
         );
@@ -275,6 +284,13 @@
       tile.setAttribute("tabindex", "0");
 
       tile.addEventListener("click", (event) => {
+        if (isPreviewTrigger(event.target)) {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleImagePreviewForCard(tile);
+          return;
+        }
+
         const interactiveTarget = event.target.closest(
           "a, button, input, select, textarea, label",
         );
@@ -294,6 +310,80 @@
         window.open(url, "_blank", "noopener");
       });
     });
+  }
+
+  function isPreviewTrigger(target) {
+    return Boolean(
+      target &&
+      target.closest("figure, .card-image-overlay, .quick-view-label"),
+    );
+  }
+
+  function toggleImagePreviewForCard(card) {
+    const image = card.querySelector("figure img");
+    if (!image) {
+      return;
+    }
+
+    const source = image.currentSrc || image.getAttribute("src") || "";
+    if (!source) {
+      return;
+    }
+
+    imagePreview.toggle(source, image.getAttribute("alt") || "Product preview");
+  }
+
+  function createImagePreview() {
+    const overlay = document.createElement("div");
+    overlay.className = "store-image-preview";
+    overlay.setAttribute("aria-hidden", "true");
+
+    const previewImage = document.createElement("img");
+    previewImage.className = "store-image-preview__image";
+    previewImage.alt = "";
+
+    overlay.appendChild(previewImage);
+    document.body.appendChild(overlay);
+
+    let activeSource = "";
+
+    function close() {
+      overlay.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("store-image-preview-open");
+      activeSource = "";
+    }
+
+    function open(source, altText) {
+      previewImage.src = source;
+      previewImage.alt = altText;
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("store-image-preview-open");
+      activeSource = source;
+    }
+
+    function toggle(source, altText) {
+      if (overlay.classList.contains("is-open") && activeSource === source) {
+        close();
+        return;
+      }
+
+      open(source, altText);
+    }
+
+    overlay.addEventListener("click", close);
+    previewImage.addEventListener("click", close);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && overlay.classList.contains("is-open")) {
+        close();
+      }
+    });
+
+    return {
+      toggle,
+    };
   }
 
   function slugify(value) {
