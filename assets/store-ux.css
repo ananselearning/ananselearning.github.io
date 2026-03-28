@@ -624,48 +624,151 @@
   border-color: var(--secondary-color);
 }
 
-/* ── Staggered Reveal Animation ── */
-.reveal-card {
+/* ── Staggered Reveal Animation ──
+   Progressive enhancement: cards are ALWAYS visible by default.
+   The .has-reveal class (added by JS on desktop only) enables the animation.
+   This prevents invisible content if JS fails or IntersectionObserver misses. */
+.has-reveal .reveal-card {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity 0.6s cubic-bezier(0.22, 0.68, 0.32, 0.98),
               transform 0.6s cubic-bezier(0.22, 0.68, 0.32, 0.98);
 }
 
-.reveal-card.is-revealed {
+.has-reveal .reveal-card.is-revealed {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Stagger delays set by JS, but define a few for initial load */
-.reveal-card:nth-child(1) { transition-delay: 0ms; }
-.reveal-card:nth-child(2) { transition-delay: 80ms; }
-.reveal-card:nth-child(3) { transition-delay: 160ms; }
-.reveal-card:nth-child(4) { transition-delay: 240ms; }
-.reveal-card:nth-child(5) { transition-delay: 320ms; }
-.reveal-card:nth-child(6) { transition-delay: 400ms; }
-.reveal-card:nth-child(7) { transition-delay: 480ms; }
-.reveal-card:nth-child(8) { transition-delay: 560ms; }
+/* Stagger delays — only active when .has-reveal is present */
+.has-reveal .reveal-card:nth-child(1) { transition-delay: 0ms; }
+.has-reveal .reveal-card:nth-child(2) { transition-delay: 80ms; }
+.has-reveal .reveal-card:nth-child(3) { transition-delay: 160ms; }
+.has-reveal .reveal-card:nth-child(4) { transition-delay: 240ms; }
+.has-reveal .reveal-card:nth-child(5) { transition-delay: 320ms; }
+.has-reveal .reveal-card:nth-child(6) { transition-delay: 400ms; }
+.has-reveal .reveal-card:nth-child(7) { transition-delay: 480ms; }
+.has-reveal .reveal-card:nth-child(8) { transition-delay: 560ms; }
 
 /* ── Smooth image loading ── */
 .catalogue-card img {
-  opacity: 0;
   transition: opacity 0.4s ease, transform 0.35s ease;
 }
 
-.catalogue-card img.is-loaded,
-.catalogue-card img[src] {
-  opacity: 1;
+/* ── Reduced motion preference ── */
+@media (prefers-reduced-motion: reduce) {
+  .has-reveal .reveal-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ── Mobile Responsive Enhancements ── */
 @media (max-width: 768px) {
+  /* Force ALL cards visible on mobile — overrides every reveal/animation rule.
+     This is how books display (always visible, no animation). Apply the same
+     behavior to posters. */
+  .reveal-card,
+  .has-reveal .reveal-card,
+  .reveal-card.is-revealed,
+  .has-reveal .reveal-card.is-revealed {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    transition-delay: 0ms !important;
+  }
+
+  /* Make poster set cards display like book cards on mobile —
+     same grid, same card structure, same visibility */
+  .catalogue-grid--sets {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .set-card {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .set-card figure {
+    min-height: 180px;
+    margin-bottom: 1rem;
+  }
+
+  .set-card img {
+    max-height: 180px;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  /* Hard fallback: keep posters section visible on mobile even if another
+     script or stale class adds hidden states. */
+  #posters,
+  #posters * {
+    visibility: visible !important;
+  }
+
+  /* site-interactions.js adds .reveal-on-scroll to section containers.
+     If .is-visible is not added in time, posters appear blank. */
+  #posters .reveal-on-scroll,
+  #posters .reveal-on-scroll.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #posters {
+    opacity: 1 !important;
+  }
+
+  #posters .catalogue-card,
+  #posters .catalogue-card.is-hidden {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #posters .catalogue-grid,
+  #posters .catalogue-grid--sets,
+  #posters .catalogue-grid--enhanced {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Posters should behave like books on mobile load: always visible */
+  #posters.mobile-force-visible .reveal-card,
+  #posters.mobile-force-visible .reveal-card.is-revealed,
+  .has-reveal #posters.mobile-force-visible .reveal-card,
+  .has-reveal #posters.mobile-force-visible .reveal-card.is-revealed {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    transition-delay: 0ms !important;
+  }
+
   .hero-stats {
     gap: 1rem;
+    justify-content: center;
   }
 
   .hero-stat strong {
     font-size: 1.4rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+    padding: 0.65rem 1.5rem;
   }
 
   .featured-grid {
@@ -673,7 +776,7 @@
   }
 
   .featured-card figure {
-    min-height: 240px;
+    min-height: 220px;
   }
 
   .category-nav-inner {
@@ -692,13 +795,91 @@
     grid-template-columns: 1fr;
   }
 
+  /* Reduce figure heights on small screens for better scroll experience */
+  .catalogue-card figure {
+    min-height: 180px;
+  }
+
+  .catalogue-card img {
+    max-height: 180px;
+  }
+
+  .set-card .card-body-content,
+  .catalogue-card .card-body-content {
+    padding: 0;
+  }
+
   .section-header {
     margin-bottom: 1.5rem;
+  }
+
+  .subsection-heading {
+    font-size: 1.1rem;
+  }
+
+  .set-details summary {
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .set-details > p {
+    font-size: 0.82rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .card-footer-row {
+    flex-wrap: wrap;
+  }
+
+  .bundle-card-enhanced figure {
+    margin: 0.75rem 0.75rem 0;
+    min-height: 160px;
+  }
+
+  .bundle-card-enhanced img {
+    max-height: 160px;
+  }
+
+  .bundle-card-enhanced .card-body-content {
+    padding: 1rem;
+  }
+
+  .bundle-header {
+    padding: 0.75rem 1rem 0;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .bundle-card--popular {
+    position: relative;
   }
 
   .bundle-card--popular::after {
     right: 1rem;
     font-size: 0.62rem;
+  }
+
+  .bundle-cta-bar {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .stockist-card figure {
+    min-height: 130px;
+    max-height: 150px;
+  }
+
+  .info-icon,
+  .trust-icon {
+    font-size: 1.6rem;
+  }
+
+  .trust-badges--enhanced .trust-badge {
+    padding: 1rem;
+  }
+
+  .card-image-overlay {
+    display: none;
   }
 
   .back-to-top {
@@ -715,8 +896,20 @@
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   }
 
+  .catalogue-grid--sets {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
   .bundle-grid-enhanced {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-card figure {
+    min-height: 260px;
   }
 }
 
@@ -729,7 +922,7 @@
     display: none !important;
   }
 
-  .reveal-card {
+  .has-reveal .reveal-card {
     opacity: 1 !important;
     transform: none !important;
   }

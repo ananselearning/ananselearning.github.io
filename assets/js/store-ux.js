@@ -87,9 +87,62 @@
   });
 
   // ── Staggered Reveal on Scroll ──
+  // Progressive enhancement: cards are visible by default (no opacity:0 in CSS).
+  // Only on non-mobile viewports with IntersectionObserver do we add .has-reveal
+  // to <html>, which activates the opacity:0 -> is-revealed animation in CSS.
   var revealCards = document.querySelectorAll(".reveal-card");
+  var isMobile = window.matchMedia("(max-width: 768px)").matches;
+  var postersSection = document.getElementById("posters");
 
-  if ("IntersectionObserver" in window && revealCards.length > 0) {
+  function ensureMobilePostersVisible() {
+    var mobileNow = window.matchMedia("(max-width: 768px)").matches;
+    if (!postersSection) {
+      return;
+    }
+
+    if (mobileNow) {
+      postersSection.classList.add("mobile-force-visible");
+      postersSection.style.opacity = "1";
+      postersSection.style.visibility = "visible";
+
+      postersSection
+        .querySelectorAll(".reveal-on-scroll")
+        .forEach(function (node) {
+          node.classList.add("is-visible");
+          node.style.opacity = "1";
+          node.style.transform = "none";
+        });
+
+      postersSection.querySelectorAll(".catalogue-card").forEach(function (card) {
+        card.classList.remove("is-hidden");
+        card.style.display = "flex";
+      });
+
+      postersSection.querySelectorAll(".reveal-card").forEach(function (card) {
+        card.classList.add("is-revealed");
+      });
+    } else {
+      postersSection.classList.remove("mobile-force-visible");
+      postersSection.style.opacity = "";
+      postersSection.style.visibility = "";
+
+      postersSection.querySelectorAll(".reveal-on-scroll").forEach(function (node) {
+        node.style.opacity = "";
+        node.style.transform = "";
+      });
+
+      postersSection.querySelectorAll(".catalogue-card").forEach(function (card) {
+        card.style.display = "";
+      });
+    }
+  }
+
+  ensureMobilePostersVisible();
+
+  if (!isMobile && "IntersectionObserver" in window && revealCards.length > 0) {
+    // Enable reveal animations — cards will start hidden via CSS
+    document.documentElement.classList.add("has-reveal");
+
     var revealObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -99,18 +152,31 @@
           }
         });
       },
-      { rootMargin: "0px 0px -60px 0px", threshold: 0.05 },
+      { rootMargin: "0px 0px -40px 0px", threshold: 0.01 },
     );
 
     revealCards.forEach(function (card) {
       revealObserver.observe(card);
     });
-  } else {
-    // Fallback: reveal all immediately
-    revealCards.forEach(function (card) {
-      card.classList.add("is-revealed");
-    });
+
+    // Safety net: force-reveal any remaining cards after 4 seconds
+    setTimeout(function () {
+      revealCards.forEach(function (card) {
+        if (!card.classList.contains("is-revealed")) {
+          card.classList.add("is-revealed");
+        }
+      });
+    }, 4000);
   }
+  // On mobile or without IntersectionObserver: cards stay visible (no .has-reveal)
+
+  window.addEventListener("resize", ensureMobilePostersVisible);
+  window.addEventListener("orientationchange", ensureMobilePostersVisible);
+  window.addEventListener("load", function () {
+    ensureMobilePostersVisible();
+    // Run once more after layout settles on mobile browsers.
+    setTimeout(ensureMobilePostersVisible, 180);
+  });
 
   // ── Back to Top Button ──
   var backToTop = document.getElementById("back-to-top");
