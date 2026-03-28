@@ -11,6 +11,48 @@
     <link rel="stylesheet" href="../assets/css/vendor.css">
     <link rel="stylesheet" href="../assets/style.css">
     <link rel="stylesheet" href="../assets/ananse.css">
+    <style>
+        .hero-domain-typing {
+            display: inline-flex;
+            align-items: center;
+            min-height: 1.4em;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .hero-domain-typing::after {
+            content: "";
+            width: 0.08em;
+            height: 1.15em;
+            margin-left: 0.2rem;
+            background: currentColor;
+            animation: heroDomainCaret 0.9s steps(1, end) infinite;
+        }
+
+        @keyframes heroDomainCaret {
+
+            0%,
+            49% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-domain-typing {
+                font-size: 0.82rem;
+                letter-spacing: 0.05em;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -42,6 +84,7 @@
 
     <section class="page-hero">
         <div class="container">
+            <span class="hero-domain-typing" id="hero-domain-typing" aria-label="Animated website names"></span>
             <h1>How Ananse Learning Found Us</h1>
         </div>
     </section>
@@ -80,6 +123,68 @@
 
     <script src="../assets/js/footer.js"></script>
     <script src="../assets/js/site-interactions.js"></script>
+    <script>
+        (function () {
+            const target = document.getElementById("hero-domain-typing");
+            if (!target) {
+                return;
+            }
+
+            const fromWord = "Studiomansa.com";
+            const toWord = "ananselearning.com";
+            const typeDelay = 95;
+            const deleteDelay = 55;
+            const holdDelay = 1050;
+            const betweenWordsDelay = 280;
+
+            let charIndex = 0;
+            let phase = "typing-from";
+
+            function tick() {
+                if (phase === "typing-from") {
+                    charIndex += 1;
+                    target.textContent = fromWord.slice(0, charIndex);
+
+                    if (charIndex >= fromWord.length) {
+                        phase = "deleting-from";
+                        setTimeout(tick, holdDelay);
+                        return;
+                    }
+
+                    setTimeout(tick, typeDelay);
+                    return;
+                }
+
+                if (phase === "deleting-from") {
+                    charIndex -= 1;
+                    target.textContent = fromWord.slice(0, Math.max(charIndex, 0));
+
+                    if (charIndex <= 0) {
+                        phase = "typing-to";
+                        setTimeout(tick, betweenWordsDelay);
+                        return;
+                    }
+
+                    setTimeout(tick, deleteDelay);
+                    return;
+                }
+
+                if (phase === "typing-to") {
+                    charIndex += 1;
+                    target.textContent = toWord.slice(0, charIndex);
+
+                    if (charIndex >= toWord.length) {
+                        phase = "done";
+                        return;
+                    }
+
+                    setTimeout(tick, typeDelay);
+                }
+            }
+
+            tick();
+        })();
+    </script>
 </body>
 
 </html>
