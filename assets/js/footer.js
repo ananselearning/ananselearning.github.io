@@ -6,25 +6,11 @@
   const MOBILE_BODY_FOOTER_COLLAPSE_CLASS = "footer-mobile-collapsed";
   const MOBILE_FOOTER_INITIAL_EXPANDED_MS = 3000;
 
-  function getFooterLinkPrefix(pathname) {
-    if (pathname.includes("/pages/pathways/")) {
-      return "../";
-    }
-
-    if (pathname.includes("/pages/")) {
-      return "";
-    }
-
-    return "pages/";
-  }
-
   function renderFooter() {
     const footerGrids = document.querySelectorAll(".site-footer-grid");
     if (!footerGrids.length) {
       return;
     }
-
-    const prefix = getFooterLinkPrefix(window.location.pathname);
 
     footerGrids.forEach((grid) => {
       grid.innerHTML = `
@@ -56,7 +42,7 @@
           </a>
         </div>
         <div class="footer-item">
-          <span><a href="${prefix}store.html">Shop</a> · <a href="${prefix}about.html">About</a> · <a href="${prefix}contact.html">Contact</a></span>
+          <span><a href="/store/">Shop</a> · <a href="/about/">About</a> · <a href="/contact/">Contact</a></span>
           <form id="emailForm" class="newsletter-signup-form footer-inline-newsletter" data-submit-endpoint="https://script.google.com/macros/s/AKfycbw6Mf7MRJSerXCnSYaFm9prNZLwCyrncau5oXyLXv8FBpWTQAmwP2QdNBj1QUBkq6P2dw/exec" novalidate>
             <p class="footer-feedback footer-inline-feedback" aria-live="polite"></p>
             <input type="email" id="email" name="email" required placeholder="Enter email for Newsletter signup" aria-label="enter your email for Newsletter signup">

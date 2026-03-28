@@ -2,9 +2,10 @@
   const STORE_URL = "https://paystack.shop/ananselearning";
 
   const sections = Array.from(document.querySelectorAll(".catalogue-section"));
-  const assetsPrefix = window.location.pathname.includes("/pages/")
-    ? "../assets"
-    : "assets";
+  const isRootIndexPath =
+    window.location.pathname === "/" ||
+    window.location.pathname === "/index.html";
+  const assetsPrefix = isRootIndexPath ? "assets" : "../assets";
 
   if (!sections.length) {
     return;

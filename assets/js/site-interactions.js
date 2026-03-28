@@ -105,116 +105,75 @@
   }
 
   function getAssetsPrefix(pathname) {
-    if (pathname.includes("/pages/pathways/")) {
-      return "../../assets";
+    if (
+      pathname === "/" ||
+      pathname === "/index.html" ||
+      pathname.endsWith("/ananselearning.github.io")
+    ) {
+      return "assets";
     }
-    if (pathname.includes("/pages/")) {
+
+    if (pathname.endsWith("/")) {
       return "../assets";
     }
-    return "assets";
+
+    return pathname.endsWith(".html") ? "assets" : "../assets";
   }
 
   function getPageImageConfig(pathname) {
+    const normalizedPath = pathname.endsWith("/index.html")
+      ? pathname.replace(/index\.html$/, "")
+      : pathname;
+
     const imageMap = [
       {
-        page: "/index.html",
+        page: "/",
         hero: "hero-home-family-reading.jpg",
         section: null,
         sectionAlt: "",
       },
       {
-        page: "/pages/about.html",
+        page: "/about/",
         hero: "hero-about-learning-journey.jpg",
         section: null,
         sectionAlt: "",
       },
       {
-        page: "/pages/contact.html",
+        page: "/contact/",
         hero: "hero-contact-community.jpg",
         section: "section-contact-reading.jpg",
         sectionAlt: "Family storytelling and connection",
       },
       {
-        page: "/pages/learning-pathways.html",
-        hero: "hero-learning-pathways.jpg",
-        section: "section-learning-pathways.jpg",
-        sectionAlt: "Learning pathways visual",
-      },
-      {
-        page: "/pages/ntentan-universe.html",
+        page: "/ntentan-universe/",
         hero: "hero-ntentan-universe.jpg",
         section: "section-ntentan-story.jpg",
         sectionAlt: "Story world and imagination",
       },
       {
-        page: "/pages/studiomansa.html",
+        page: "/studiomansa/",
         hero: "hero-studio-mansa.jpg",
         section: "section-studio-mansa.jpg",
         sectionAlt: "Creative studio storytelling visual",
       },
       {
-        page: "/pages/qr-holding-page.html",
+        page: "/qr-holding-page/",
         hero: "hero-qr-coming-soon.jpg",
         section: "section-learning-pathways.jpg",
         sectionAlt: "Coming soon visual",
       },
-      {
-        page: "/pages/pathways/pathway-architecture.html",
-        hero: "pathway-architecture.jpg",
-        section: "section-art-design.jpg",
-        sectionAlt: "Architecture pathway visual",
-      },
-      {
-        page: "/pages/pathways/pathway-art-and-design.html",
-        hero: "pathway-art-design.jpg",
-        section: "section-art-design.jpg",
-        sectionAlt: "Art and design pathway visual",
-      },
-      {
-        page: "/pages/pathways/pathway-food-and-culture.html",
-        hero: "pathway-food-culture.jpg",
-        section: "section-food-culture.jpg",
-        sectionAlt: "Food and culture pathway visual",
-      },
-      {
-        page: "/pages/pathways/pathway-history-and-heritage.html",
-        hero: "pathway-history-heritage.jpg",
-        section: "section-history-heritage.jpg",
-        sectionAlt: "History and heritage pathway visual",
-      },
-      {
-        page: "/pages/pathways/pathway-literature.html",
-        hero: "pathway-literature.jpg",
-        section: "section-literature.jpg",
-        sectionAlt: "Literature pathway visual",
-      },
-      {
-        page: "/pages/pathways/pathway-research.html",
-        hero: "pathway-research.jpg",
-        section: "section-research.jpg",
-        sectionAlt: "Research pathway visual",
-      },
-      {
-        page: "/pages/pathways/pathway-sustainability.html",
-        hero: "pathway-sustainability.jpg",
-        section: "section-sustainability.jpg",
-        sectionAlt: "Sustainability pathway visual",
-      },
-      {
-        page: "/pages/pathways/pathway-technology.html",
-        hero: "pathway-technology.jpg",
-        section: "section-technology.jpg",
-        sectionAlt: "Technology pathway visual",
-      },
     ];
 
-    const exactMatch = imageMap.find((item) => pathname.endsWith(item.page));
+    const exactMatch = imageMap.find((item) => normalizedPath === item.page);
     if (exactMatch) {
       return exactMatch;
     }
 
-    if (pathname === "/" || pathname.endsWith("/ananselearning.github.io")) {
-      return imageMap.find((item) => item.page === "/index.html") || null;
+    if (
+      normalizedPath === "/" ||
+      normalizedPath.endsWith("/ananselearning.github.io")
+    ) {
+      return imageMap.find((item) => item.page === "/") || null;
     }
 
     return null;
