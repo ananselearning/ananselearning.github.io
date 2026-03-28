@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="../assets/css/vendor.css">
     <link rel="stylesheet" href="../assets/style.css">
     <link rel="stylesheet" href="../assets/ananse.css">
+    <style>
+        [data-theme="dark"] .contact-values .contact-value {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .contact-values a.contact-value:hover,
+        [data-theme="dark"] .contact-values a.contact-value:focus-visible {
+            color: #ffffff !important;
+            opacity: 0.9;
+        }
+    </style>
 </head>
 
 <body>
@@ -50,11 +61,13 @@
         <div class="container">
             <div class="catalogue-card">
                 <h3>Reach us directly</h3>
-                <p>Email: <a href="mailto:ananselearning@gmail.com">ananselearning@gmail.com</a><br>WhatsApp: <a
+                <p class="contact-values">Email: <a href="mailto:ananselearning@gmail.com"
+                        class="contact-value">ananselearning@gmail.com</a><br>WhatsApp: <a
                         href="https://wa.me/233244840042" data-whatsapp-context="the Contact page" target="_blank"
-                        rel="noopener">+233 244 840
+                        rel="noopener" class="contact-value">+233 244 840
                         042</a><br>Instagram: <a href="https://www.instagram.com/ananselearning" target="_blank"
-                        rel="noopener">@ananselearning</a><br><strong>Find us:</strong> Within the GCIC
+                        rel="noopener" class="contact-value">@ananselearning</a><br><strong>Find us:</strong> Within the
+                    GCIC
                     compound,
                     behind the main building, Airport West, 198 Osu Badu St, Accra, Ghana</p>
             </div>
