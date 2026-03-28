@@ -281,6 +281,13 @@
       return "https://paystack.com/buy/ananselearning-book-adobea-bakes-coconut-doughts";
     }
 
+    if (
+      normalizedTitle.includes("animal colouring book") ||
+      normalizedTitle.includes("animal coloring book")
+    ) {
+      return "https://paystack.com/buy/animal-colouring-book-axjage";
+    }
+
     return null;
   }
 
