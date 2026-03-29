@@ -68,13 +68,15 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-7">
-                    <h2>The App</h2>
-                    <p>The Ntentan Universe app is almost ready. A world your child will make their own and keep
-                        coming back to.</p>
+                    <h2>The Ntentan App</h2>
+                    <p>The Ntentan Universe, our app in development, is a growing world of characters, stories, design
+                        challenges, and cultural adventures rooted in Ghanaian heritage. Mansa, Anansewaa, and Brempong
+                        are waiting to meet you. At the heart of it all, the legend himself, Ananse, is coming.</p>
+                    <p>Be the first to know when it launches.</p>
                 </div>
                 <div class="col-md-5">
                     <div class="catalogue-card">
-                        <h3>Join the waitlist</h3>
+                        <h3>Join the Web</h3>
                         <form id="waitlistForm">
                             <input id="wait-name" class="form-control mb-3" type="text" name="name"
                                 placeholder="Your name" required>
@@ -86,8 +88,7 @@
                                 <option value="Educator or school">Educator or School</option>
                                 <option value="Institution or partner">Institution or Partner</option>
                             </select>
-                            <button id="waitlistSubmitBtn" class="btn btn-primary" type="submit">Join the
-                                waitlist</button>
+                            <button id="waitlistSubmitBtn" class="btn btn-primary" type="submit">Join the Web</button>
                             <p id="waitlistFeedback" class="waitlist-feedback" aria-live="polite"></p>
                         </form>
                     </div>
@@ -133,12 +134,12 @@
                 feedback.textContent = 'Thanks! You have joined the waitlist.';
                 feedback.classList.add('waitlist-feedback--success');
                 form.reset();
-                btn.textContent = 'Join the waitlist';
+                btn.textContent = 'Join the Web';
                 btn.disabled = false;
             } catch (error) {
                 feedback.textContent = 'Network error. Please try again.';
                 feedback.classList.add('waitlist-feedback--error');
-                btn.textContent = 'Join the waitlist';
+                btn.textContent = 'Join the Web';
                 btn.disabled = false;
             }
         });

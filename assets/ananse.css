@@ -570,6 +570,19 @@ body.home-image-preview-open {
   color: var(--dark-color);
 }
 
+/* Keep the Ntentan waitlist CTA in brand dark-green with glow on all states */
+#waitlistSubmitBtn,
+#waitlistSubmitBtn:hover,
+#waitlistSubmitBtn:focus,
+#waitlistSubmitBtn:focus-visible,
+#waitlistSubmitBtn:active,
+#waitlistSubmitBtn:not(:disabled):not(.disabled):active {
+  background-color: var(--secondary-dark) !important;
+  border-color: var(--secondary-dark) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 22px rgba(18, 64, 46, 0.35) !important;
+}
+
 .store-toolbar {
   position: sticky;
   top: 12px;
