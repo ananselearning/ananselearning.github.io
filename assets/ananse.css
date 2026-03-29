@@ -1520,7 +1520,7 @@ footer .footer-inline-newsletter input[type="email"] {
   width: 100%;
   min-height: 28px;
   height: 28px;
-  margin-top: 0;
+  margin: 0;
   padding: 0.2rem 0.55rem;
   border: 1px solid var(--border-soft);
   border-radius: 999px;
@@ -1529,6 +1529,7 @@ footer .footer-inline-newsletter input[type="email"] {
   font-size: 0.74rem;
   line-height: 1;
   box-sizing: border-box;
+  align-self: center;
 }
 
 footer .footer-inline-newsletter input[type="email"]:focus {
@@ -1539,6 +1540,7 @@ footer .footer-inline-newsletter input[type="email"]:focus {
 footer .footer-inline-newsletter button[type="submit"] {
   min-height: 28px;
   height: 28px;
+  margin: 0;
   padding: 0.2rem 0.75rem;
   border: 1px solid var(--border-soft);
   border-radius: 999px;
@@ -1548,6 +1550,7 @@ footer .footer-inline-newsletter button[type="submit"] {
   font-weight: 700;
   line-height: 1;
   box-sizing: border-box;
+  align-self: center;
 }
 
 footer .footer-inline-newsletter button[type="submit"]:hover,
@@ -1969,11 +1972,15 @@ footer .footer-social-icons .social-icon-link .social-icon-svg {
     grid-column: 1;
     grid-row: 1;
     width: 170px;
+    margin: 0;
+    align-self: center;
   }
 
   footer .footer-inline-newsletter button[type="submit"] {
     grid-column: 2;
     grid-row: 1;
+    margin: 0;
+    align-self: center;
   }
 
   footer .footer-inline-feedback {
