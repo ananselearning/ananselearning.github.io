@@ -577,6 +577,8 @@ body.store-image-preview-open {
 
 .stockist-card {
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .stockist-card figure {
@@ -593,6 +595,8 @@ body.store-image-preview-open {
   color: var(--secondary-color);
   font-weight: 600;
   font-size: 0.88rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 /* ── Enhanced Info Grid ── */
