@@ -413,6 +413,21 @@ body>* {
   transform: scale(1.04);
 }
 
+.home-page .catalogue-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-page .catalogue-card .price {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.home-page .catalogue-card > a.btn {
+  margin-top: 0.65rem;
+  align-self: flex-start;
+}
+
 .home-page .catalogue-card figure {
   position: relative;
 }
