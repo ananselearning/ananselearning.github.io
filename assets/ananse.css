@@ -165,32 +165,14 @@ body>* {
 .main-menu ul.menu-list a {
   font-weight: 600;
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  line-height: 1.2;
-  padding: 0.5rem 0.7rem;
-  border-radius: 10px;
-  z-index: 2;
-  pointer-events: auto;
+  color: var(--secondary-color);
+  cursor: pointer;
   transition: color 0.25s ease;
 }
 
-.main-menu ul.menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.main-menu ul.menu-list .menu-item {
-  margin-bottom: 0;
-}
-
-#header #navbar,
-#header #navbar * {
-  pointer-events: auto;
+.main-menu ul.menu-list a:hover,
+.main-menu ul.menu-list a:focus-visible {
+  color: var(--accent-color);
 }
 
 /* Hide StellarNav's own menu toggle everywhere — we use our own hamburger */
@@ -273,17 +255,6 @@ body>* {
   position: sticky;
   top: 0;
   z-index: 100;
-}
-
-#header,
-#header #navbar,
-#header #navbar .main-menu,
-#header #navbar .menu-list,
-#header #navbar .menu-list .menu-item,
-#header #navbar .menu-list .menu-item > a {
-  position: relative;
-  z-index: 120;
-  pointer-events: auto;
 }
 
 [data-theme="dark"] .main-logo a,
@@ -1754,31 +1725,6 @@ footer .footer-social-icons .social-icon-link .social-icon-svg {
   #header .row.align-items-center > .col-md-9 {
     display: flex;
     justify-content: flex-end;
-    position: relative;
-    z-index: 3;
-  }
-
-  #header .row.align-items-center > .col-md-3 {
-    position: relative;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  #header .row.align-items-center > .col-md-3 .main-logo,
-  #header .row.align-items-center > .col-md-3 .main-logo * {
-    pointer-events: auto;
-  }
-
-  #header #navbar {
-    position: relative;
-    z-index: 4;
-  }
-
-  #header .menu-list > .menu-item,
-  #header .menu-list > .menu-item > a {
-    position: relative;
-    z-index: 6;
-    pointer-events: auto !important;
   }
 
   #header #navbar,
