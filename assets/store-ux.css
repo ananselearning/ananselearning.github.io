@@ -591,6 +591,13 @@ body.store-image-preview-open {
   text-align: center;
 }
 
+.stockist-card .card-body-content h4 {
+  min-height: 3.1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 .stockist-card a {
   color: var(--secondary-color);
   font-weight: 600;
