@@ -535,6 +535,31 @@ body.home-image-preview-open {
   color: var(--muted-text-color);
 }
 
+.venue-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+  background: rgba(143, 201, 203, 0.14);
+  border: 1px solid rgba(143, 201, 203, 0.35);
+  border-radius: 6px;
+  padding: 0 5px;
+  line-height: 1.6;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.venue-cycle {
+  display: inline;
+  transition: opacity 0.35s ease;
+}
+
+.venue-cycle.is-fading {
+  opacity: 0;
+}
+
 .price {
   color: var(--secondary-color);
   font-weight: 700;

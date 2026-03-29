@@ -747,7 +747,10 @@
                             alt="City Reads Books and Stationery"></figure>
                     <div class="card-body-content">
                         <h4>City Reads Books and Stationery</h4>
-                        <p class="catalogue-meta">&#128205; I100 Aviation Rd, Adenta Municipality</p>
+                        <p class="catalogue-meta">
+                          <span class="venue-badge">2 Venues</span>
+                          &#128205; <span class="venue-cycle" data-venues="100 Aviation Rd, Adenta Municipality|City Reads, Osu — Adjacent Kimberrys, Okodan Rd">100 Aviation Rd, Adenta Municipality</span>
+                        </p>
                         <a href="https://www.instagram.com/booksenroute" target="_blank"
                             rel="noopener">@booksenroute</a>
                     </div>
@@ -800,6 +803,23 @@
     <script src="../assets/js/footer.js"></script>
     <script src="../assets/js/site-interactions.js"></script>
     <script src="../assets/js/store-ux.js"></script>
+    <script>
+      (() => {
+        document.querySelectorAll('.venue-cycle').forEach(el => {
+          const venues = el.dataset.venues.split('|');
+          if (venues.length < 2) return;
+          let idx = 0;
+          setInterval(() => {
+            el.classList.add('is-fading');
+            setTimeout(() => {
+              idx = (idx + 1) % venues.length;
+              el.textContent = venues[idx];
+              el.classList.remove('is-fading');
+            }, 350);
+          }, 5000);
+        });
+      })();
+    </script>
 </body>
 
 </html>
