@@ -6,6 +6,19 @@
 (function () {
   "use strict";
 
+  // ── Header height → CSS custom property (for sticky category nav offset) ──
+  const headerWrap = document.getElementById("header-wrap");
+  function syncHeaderHeight() {
+    if (headerWrap) {
+      document.documentElement.style.setProperty(
+        "--header-height",
+        headerWrap.offsetHeight + "px"
+      );
+    }
+  }
+  syncHeaderHeight();
+  window.addEventListener("resize", syncHeaderHeight, { passive: true });
+
   // ── Scroll Progress Bar ──
   const progressBar = document.querySelector(".scroll-progress");
 
@@ -79,8 +92,9 @@
       var target = document.getElementById(targetId);
       if (target) {
         var navHeight = categoryNav ? categoryNav.offsetHeight : 0;
+        var hdrHeight = headerWrap ? headerWrap.offsetHeight : 0;
         var top =
-          target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+          target.getBoundingClientRect().top + window.scrollY - hdrHeight - navHeight - 16;
         window.scrollTo({ top: top, behavior: "smooth" });
       }
     });
@@ -225,8 +239,9 @@
       var target = document.getElementById("featured");
       if (target) {
         var navHeight = categoryNav ? categoryNav.offsetHeight : 0;
+        var hdrHeight = headerWrap ? headerWrap.offsetHeight : 0;
         var top =
-          target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+          target.getBoundingClientRect().top + window.scrollY - hdrHeight - navHeight - 16;
         window.scrollTo({ top: top, behavior: "smooth" });
       }
     });
@@ -239,8 +254,9 @@
       var target = document.getElementById("books");
       if (target) {
         var navHeight = categoryNav ? categoryNav.offsetHeight : 0;
+        var hdrHeight = headerWrap ? headerWrap.offsetHeight : 0;
         var top =
-          target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+          target.getBoundingClientRect().top + window.scrollY - hdrHeight - navHeight - 16;
         window.scrollTo({ top: top, behavior: "smooth" });
       }
     });

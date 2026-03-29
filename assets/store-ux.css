@@ -78,7 +78,7 @@
 /* ── Sticky Category Nav ── */
 .store-category-nav {
   position: sticky;
-  top: 0;
+  top: var(--header-height, 74px);
   z-index: 50;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
