@@ -105,6 +105,7 @@
 
       let activeIndex = 0;
       image.src = sources[activeIndex];
+      card.dataset.activePreviewIndex = String(activeIndex);
 
       window.setInterval(() => {
         image.classList.add("is-fading");
@@ -112,6 +113,7 @@
         window.setTimeout(() => {
           activeIndex = (activeIndex + 1) % sources.length;
           image.src = sources[activeIndex];
+          card.dataset.activePreviewIndex = String(activeIndex);
           image.classList.remove("is-fading");
         }, 250);
       }, 5000);
@@ -124,8 +126,8 @@
 
   allCards.forEach((card) => {
     const title = (card.querySelector("h4")?.textContent || "").trim();
-    const paystackProductUrl = getPaystackProductUrl(title) || STORE_URL;
-    if (paystackProductUrl && !card.dataset.storeLinked) {
+    const defaultPaystackProductUrl = getPaystackProductUrl(title) || STORE_URL;
+    if (defaultPaystackProductUrl && !card.dataset.storeLinked) {
       card.classList.add("is-clickable-card");
       card.setAttribute("role", "link");
       card.setAttribute("tabindex", "0");
@@ -150,7 +152,7 @@
           return;
         }
 
-        window.open(paystackProductUrl, "_blank", "noopener");
+        window.open(getCardPaystackProductUrl(card, defaultPaystackProductUrl), "_blank", "noopener");
       });
 
       card.addEventListener("keydown", (event) => {
@@ -170,10 +172,28 @@
         }
 
         event.preventDefault();
-        window.open(paystackProductUrl, "_blank", "noopener");
+        window.open(getCardPaystackProductUrl(card, defaultPaystackProductUrl), "_blank", "noopener");
       });
     }
   });
+
+  function getCardPaystackProductUrl(card, fallbackUrl) {
+    const previewLinks = String(card.dataset.previewLinks || "")
+      .split("|")
+      .map((value) => value.trim())
+      .filter(Boolean);
+
+    if (!previewLinks.length) {
+      return fallbackUrl;
+    }
+
+    const activeIndex = Number.parseInt(card.dataset.activePreviewIndex || "", 10);
+    if (!Number.isNaN(activeIndex) && activeIndex >= 0 && activeIndex < previewLinks.length) {
+      return previewLinks[activeIndex];
+    }
+
+    return previewLinks[0] || fallbackUrl;
+  }
 
   function getPlaceholderForCategory(category) {
     if (category === "posters") {
