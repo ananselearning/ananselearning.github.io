@@ -414,7 +414,7 @@
     }
 
     if (
-      normalizedTitle.includes("afafanto") &&
+      normalizedTitle.includes("afafant") &&
       normalizedTitle.includes("starter set")
     ) {
       return "https://paystack.com/buy/afafanto-starter-set-bundle";
@@ -425,7 +425,7 @@
     }
 
     if (
-      normalizedTitle.includes("nyansapo") &&
+      normalizedTitle.includes("nyansap") &&
       normalizedTitle.includes("family learning set")
     ) {
       return "https://paystack.com/buy/nyansapo-family-learning-set-bundle";
