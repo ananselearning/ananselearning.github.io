@@ -1143,11 +1143,10 @@ body.home-image-preview-open {
 }
 
 .page-feature-visual {
-  display: inline-block;
+  display: block;
   width: fit-content;
   max-width: 100%;
-  margin-top: 1.2rem;
-  margin-bottom: 0;
+  margin: 1.2rem auto 0;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border-soft);

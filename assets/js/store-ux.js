@@ -12,7 +12,7 @@
     if (headerWrap) {
       document.documentElement.style.setProperty(
         "--header-height",
-        headerWrap.offsetHeight + "px"
+        headerWrap.offsetHeight + "px",
       );
     }
   }
@@ -94,7 +94,11 @@
         var navHeight = categoryNav ? categoryNav.offsetHeight : 0;
         var hdrHeight = headerWrap ? headerWrap.offsetHeight : 0;
         var top =
-          target.getBoundingClientRect().top + window.scrollY - hdrHeight - navHeight - 16;
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          hdrHeight -
+          navHeight -
+          16;
         window.scrollTo({ top: top, behavior: "smooth" });
       }
     });
@@ -241,7 +245,11 @@
         var navHeight = categoryNav ? categoryNav.offsetHeight : 0;
         var hdrHeight = headerWrap ? headerWrap.offsetHeight : 0;
         var top =
-          target.getBoundingClientRect().top + window.scrollY - hdrHeight - navHeight - 16;
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          hdrHeight -
+          navHeight -
+          16;
         window.scrollTo({ top: top, behavior: "smooth" });
       }
     });
@@ -256,7 +264,11 @@
         var navHeight = categoryNav ? categoryNav.offsetHeight : 0;
         var hdrHeight = headerWrap ? headerWrap.offsetHeight : 0;
         var top =
-          target.getBoundingClientRect().top + window.scrollY - hdrHeight - navHeight - 16;
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          hdrHeight -
+          navHeight -
+          16;
         window.scrollTo({ top: top, behavior: "smooth" });
       }
     });
