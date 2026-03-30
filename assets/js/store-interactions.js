@@ -336,7 +336,7 @@
       return "https://paystack.com/buy/ananselearning-book-worlds-they-made";
     }
 
-    if (normalizedTitle.includes("asante twi-english")) {
+    if (normalizedTitle.includes("asante twi english")) {
       return "https://paystack.com/buy/ananselearning-book-abd-asante-twi-english-bilingual-book";
     }
 
