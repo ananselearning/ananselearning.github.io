@@ -120,9 +120,13 @@
     });
   }
 
-  const allCards = sections.flatMap((section) =>
+  const catalogueCards = sections.flatMap((section) =>
     Array.from(section.querySelectorAll(".catalogue-card")),
   );
+  const bundleCards = Array.from(
+    document.querySelectorAll("#bundles .catalogue-card"),
+  );
+  const allCards = [...catalogueCards, ...bundleCards];
 
   allCards.forEach((card) => {
     const title = (card.querySelector("h4")?.textContent || "").trim();
@@ -409,7 +413,10 @@
       return "https://paystack.com/buy/plantains-amazing-journey-poster";
     }
 
-    if (normalizedTitle.includes("afafanto") && normalizedTitle.includes("starter set")) {
+    if (
+      normalizedTitle.includes("afafanto") &&
+      normalizedTitle.includes("starter set")
+    ) {
       return "https://paystack.com/buy/afafanto-starter-set-bundle";
     }
 
@@ -417,11 +424,17 @@
       return "https://paystack.com/buy/boa-me-na-me-mmoa-wo-bundle";
     }
 
-    if (normalizedTitle.includes("nyansapo") && normalizedTitle.includes("family learning set")) {
+    if (
+      normalizedTitle.includes("nyansapo") &&
+      normalizedTitle.includes("family learning set")
+    ) {
       return "https://paystack.com/buy/nyansapo-family-learning-set-bundle";
     }
 
-    if (normalizedTitle.includes("eban") && normalizedTitle.includes("homeschool set")) {
+    if (
+      normalizedTitle.includes("eban") &&
+      normalizedTitle.includes("homeschool set")
+    ) {
       return "https://paystack.com/buy/eban-homeschool-set-bundle";
     }
 
