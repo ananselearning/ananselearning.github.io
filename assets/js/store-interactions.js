@@ -431,10 +431,7 @@
       return "https://paystack.com/buy/nyansapo-family-learning-set-bundle";
     }
 
-    if (
-      normalizedTitle.includes("eban") &&
-      normalizedTitle.includes("homeschool set")
-    ) {
+    if (normalizedTitle.includes("homeschool set")) {
       return "https://paystack.com/buy/eban-homeschool-set-bundle";
     }
 
