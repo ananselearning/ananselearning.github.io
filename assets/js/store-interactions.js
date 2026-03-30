@@ -216,12 +216,12 @@
 
   function getPlaceholderForCategory(category) {
     if (category === "posters") {
-      return `${assetsPrefix}/images/placeholders/placeholder_poster.png`;
+      return `${assetsPrefix}/images/placeholders/placeholder-poster.png`;
     }
     if (category === "flashcards") {
-      return `${assetsPrefix}/images/placeholders/placeholder_flashcard.png`;
+      return `${assetsPrefix}/images/placeholders/placeholder-flashcard.png`;
     }
-    return `${assetsPrefix}/images/placeholders/placeholder_book.png`;
+    return `${assetsPrefix}/images/placeholders/placeholder-book.png`;
   }
 
   function getImageForCard(category, title) {
@@ -230,14 +230,14 @@
     if (category === "posters") {
       const posterFileName = getPosterFileName(normalized);
       return posterFileName
-        ? `${assetsPrefix}/images/Posters/${encodeURIComponent(posterFileName)}`
+        ? `${assetsPrefix}/images/posters/${encodeURIComponent(posterFileName)}`
         : getPlaceholderForCategory(category);
     }
 
     if (category === "flashcards") {
       const flashcardFileName = getFlashcardFileName(normalized);
       return flashcardFileName
-        ? `${assetsPrefix}/images/Flashcards/${encodeURI(flashcardFileName)}`
+        ? `${assetsPrefix}/images/flashcards/${encodeURI(flashcardFileName)}`
         : getPlaceholderForCategory(category);
     }
 
@@ -250,49 +250,51 @@
       return getPlaceholderForCategory(category);
     }
 
-    return `${assetsPrefix}/images/book_covers/${encodeURIComponent(coverFileName)}`;
+    return `${assetsPrefix}/images/book-covers/${encodeURIComponent(coverFileName)}`;
   }
 
   function getBookCoverFileName(normalizedTitle) {
     if (normalizedTitle.includes("worlds they made"))
-      return "Worlds They Made.png";
+      return "book-worlds-they-made-cover.png";
     if (normalizedTitle.includes("design workbook"))
-      return "The Design Workbook.png";
-    if (normalizedTitle.includes("abcdawadawa")) return "abcdawadawa cover.png";
-    if (normalizedTitle.startsWith("abd")) return "abd cover.png";
+      return "book-design-workbook-cover.png";
+    if (normalizedTitle.includes("abcdawadawa")) return "book-abcdawadawa-cover.jpeg";
+    if (normalizedTitle.startsWith("abd")) return "book-abd-bilingual-cover.jpeg";
     if (normalizedTitle.includes("adobea bakes"))
-      return "adobea bakes updated cover16april2025.png";
+      return "book-adobea-bakes-coconut-doughnuts-cover.jpeg";
     if (normalizedTitle.includes("my favourite things"))
-      return "My Favourite Things Cover.png";
+      return "book-my-favourite-things-cover.jpeg";
+    if (normalizedTitle.includes("animal colouring book") || normalizedTitle.includes("colour stories"))
+      return "book-colour-stories-front-page.png";
     return null;
   }
 
   function getPosterFileName(normalizedTitle) {
     const postersByTitle = {
-      "letters of the alphabet": "1 Letters of the Alphabet.png",
+      "letters of the alphabet": "1-letters-of-the-alphabet.png",
       "ananses alphabets or something like that":
-        "2 Ananse’s Alphabets...or something like that!.png",
-      colours: "3 Colours.png",
-      "grandpa gyimahs garage": "4 Grandpa Gyimah_s Garage.png",
-      shapes: "5 Shapes.png",
-      "the shapes of my snacks": "6 The Shapes of My Snacks.png",
-      "fruits vegetables": "7 Fruits & Vegetables.png",
-      "green to gold plantains amazing journey": "8 Green to Gold.png",
-      "giraffe days of the week": "9 Days of the Week (in Ga).png",
-      "months of the year": "10 Months of the Year (in Asante Twi).png",
-      "animal portrait": "11 Animal Portrait.png",
-      "jungle portrait": "12 Jungle Portrait.png",
-      "brempong the bear": "13 Brempong the Bear.png",
-      "lizzie the lion": "14 Lizzie the Lion.png",
-      "gigraw the giraffe": "15 Gigraw the Giraffe.png",
-      "zanzama the zebra": "16 Zanzama the Zebra.png",
-      "journey to kukurantumi": "17 Journey to Kukurantumi.png",
-      "kekelis kitchen": "18 Kekeli_s Kitchen.png",
-      "a kenkey feast": "19 A Kenkey Feast.png",
-      "doris delicious desserts": "20 Doris_ Delicious Desserts.png",
-      "numbers in english asante twi eʋe ga": "21 Numbers (in Eʋe).png",
-      "map of ghana": "22 Map of Ghana.png",
-      "food map of ghana": "23 Food Map of Ghana.png",
+        "2-ananses-alphabets-or-something-like-that.png",
+      colours: "3-colours.png",
+      "grandpa gyimahs garage": "4-grandpa-gyimah-s-garage.png",
+      shapes: "5-shapes.png",
+      "the shapes of my snacks": "6-the-shapes-of-my-snacks.png",
+      "fruits vegetables": "7-fruits-and-vegetables.png",
+      "green to gold plantains amazing journey": "8-green-to-gold.png",
+      "giraffe days of the week": "9-days-of-the-week-in-ga.png",
+      "months of the year": "10-months-of-the-year-in-asante-twi.png",
+      "animal portrait": "11-animal-portrait.png",
+      "jungle portrait": "12-jungle-portrait.png",
+      "brempong the bear": "13-brempong-the-bear.png",
+      "lizzie the lion": "14-lizzie-the-lion.png",
+      "gigraw the giraffe": "15-gigraw-the-giraffe.png",
+      "zanzama the zebra": "16-zanzama-the-zebra.png",
+      "journey to kukurantumi": "17-journey-to-kukurantumi.png",
+      "kekelis kitchen": "18-kekeli-s-kitchen.png",
+      "a kenkey feast": "19-a-kenkey-feast.png",
+      "doris delicious desserts": "20-doris-delicious-desserts.png",
+      "numbers in english asante twi eʋe ga": "21-numbers-in-eve.png",
+      "map of ghana": "22-map-of-ghana.png",
+      "food map of ghana": "23-food-map-of-ghana.png",
     };
 
     return postersByTitle[normalizedTitle] || null;
@@ -300,11 +302,11 @@
 
   function getFlashcardFileName(normalizedTitle) {
     if (normalizedTitle.includes("year of affirmations")) {
-      return "Months of the Year/Cover.png";
+      return "a-year-of-affirmations/asante-twi-front-cover.jpg";
     }
 
     if (normalizedTitle.includes("number flashcards")) {
-      return "Numbers 0-20/Numbers in Asante Twi.png";
+      return "language-packs/asante-twi-pack/1-numbers-front-cover.jpg";
     }
 
     return null;

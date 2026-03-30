@@ -73,7 +73,7 @@
     const hero = document.querySelector(".page-hero");
 
     if (hero && imageConfig.hero) {
-      const heroImageUrl = `${assetsPrefix}/images/page_images/${imageConfig.hero}`;
+      const heroImageUrl = `${assetsPrefix}/images/page-images/${imageConfig.hero}`;
       hero.classList.add("has-photo-hero");
       hero.style.backgroundImage = `linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%), url("${heroImageUrl}")`;
     }
@@ -97,7 +97,7 @@
     figure.className = "page-feature-visual";
 
     const image = document.createElement("img");
-    image.src = `${assetsPrefix}/images/page_images/${imageConfig.section}`;
+    image.src = `${assetsPrefix}/images/page-images/${imageConfig.section}`;
     image.alt = imageConfig.sectionAlt || "Ananse Learning visual";
     image.loading = "lazy";
 
