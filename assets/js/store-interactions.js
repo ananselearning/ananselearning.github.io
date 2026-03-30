@@ -258,13 +258,18 @@
       return "book-worlds-they-made-cover.png";
     if (normalizedTitle.includes("design workbook"))
       return "book-design-workbook-cover.png";
-    if (normalizedTitle.includes("abcdawadawa")) return "book-abcdawadawa-cover.jpeg";
-    if (normalizedTitle.startsWith("abd")) return "book-abd-bilingual-cover.jpeg";
+    if (normalizedTitle.includes("abcdawadawa"))
+      return "book-abcdawadawa-cover.jpeg";
+    if (normalizedTitle.startsWith("abd"))
+      return "book-abd-bilingual-cover.jpeg";
     if (normalizedTitle.includes("adobea bakes"))
       return "book-adobea-bakes-coconut-doughnuts-cover.jpeg";
     if (normalizedTitle.includes("my favourite things"))
       return "book-my-favourite-things-cover.jpeg";
-    if (normalizedTitle.includes("animal colouring book") || normalizedTitle.includes("colour stories"))
+    if (
+      normalizedTitle.includes("animal colouring book") ||
+      normalizedTitle.includes("colour stories")
+    )
       return "book-colour-stories-front-page.png";
     return null;
   }
