@@ -152,7 +152,11 @@
           return;
         }
 
-        window.open(getCardPaystackProductUrl(card, defaultPaystackProductUrl), "_blank", "noopener");
+        window.open(
+          getCardPaystackProductUrl(card, defaultPaystackProductUrl),
+          "_blank",
+          "noopener",
+        );
       });
 
       card.addEventListener("keydown", (event) => {
@@ -172,7 +176,11 @@
         }
 
         event.preventDefault();
-        window.open(getCardPaystackProductUrl(card, defaultPaystackProductUrl), "_blank", "noopener");
+        window.open(
+          getCardPaystackProductUrl(card, defaultPaystackProductUrl),
+          "_blank",
+          "noopener",
+        );
       });
     }
   });
@@ -187,8 +195,15 @@
       return fallbackUrl;
     }
 
-    const activeIndex = Number.parseInt(card.dataset.activePreviewIndex || "", 10);
-    if (!Number.isNaN(activeIndex) && activeIndex >= 0 && activeIndex < previewLinks.length) {
+    const activeIndex = Number.parseInt(
+      card.dataset.activePreviewIndex || "",
+      10,
+    );
+    if (
+      !Number.isNaN(activeIndex) &&
+      activeIndex >= 0 &&
+      activeIndex < previewLinks.length
+    ) {
       return previewLinks[activeIndex];
     }
 
@@ -343,6 +358,25 @@
       normalizedTitle.includes("animal coloring book")
     ) {
       return "https://paystack.com/buy/animal-colouring-book-axjage";
+    }
+
+    if (
+      normalizedTitle.includes("mate masie") &&
+      normalizedTitle.includes("set")
+    ) {
+      return "https://paystack.com/buy/mate-masie-set-adinkra-symbol-language-literacy-posters";
+    }
+
+    if (normalizedTitle.includes("awale") && normalizedTitle.includes("set")) {
+      return "https://paystack.com/buy/awale-te-set-ga-symbol-language-literacy-poster-collection";
+    }
+
+    if (normalizedTitle.includes("gomeka") && normalizedTitle.includes("set")) {
+      return "https://paystack.com/buy/gomekai-set-eve-symbol-language-literacy-poster-collection";
+    }
+
+    if (normalizedTitle.includes("dame dame")) {
+      return "https://paystack.com/buy/dame-dame-adinkra-symbol-numeracy-set-poster-collection";
     }
 
     return null;
