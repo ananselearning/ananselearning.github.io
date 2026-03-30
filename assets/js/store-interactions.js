@@ -379,6 +379,38 @@
       return "https://paystack.com/buy/dame-dame-adinkra-symbol-numeracy-set-poster-collection";
     }
 
+    if (normalizedTitle.includes("lizzie the lion")) {
+      return "https://paystack.com/buy/lizzie-the-lion-poster";
+    }
+
+    if (normalizedTitle.includes("zanzama the zebra")) {
+      return "https://paystack.com/buy/zanzama-the-zebra-poster";
+    }
+
+    if (normalizedTitle.includes("gigraw the giraffe")) {
+      return "https://paystack.com/buy/gigraw-the-giraffe-poster";
+    }
+
+    if (normalizedTitle.includes("brempong the bear")) {
+      return "https://paystack.com/buy/brempong-the-bear-poster";
+    }
+
+    if (normalizedTitle.includes("journey to kukurantumi")) {
+      return "https://paystack.com/buy/journey-to-kukurantumi-poster";
+    }
+
+    if (normalizedTitle.includes("jungle portrait")) {
+      return "https://paystack.com/buy/jungle-portrait-poster";
+    }
+
+    if (normalizedTitle.includes("animal portrait")) {
+      return "https://paystack.com/buy/animal-portrait-poster";
+    }
+
+    if (normalizedTitle.includes("plantains amazing journey")) {
+      return "https://paystack.com/buy/plantains-amazing-journey-poster";
+    }
+
     return null;
   }
 
