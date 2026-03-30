@@ -157,12 +157,6 @@
         section: "section-studio-mansa.jpg",
         sectionAlt: "Creative studio storytelling visual",
       },
-      {
-        page: "/qr-holding-page/",
-        hero: "hero-qr-coming-soon.jpg",
-        section: "section-learning-pathways.jpg",
-        sectionAlt: "Coming soon visual",
-      },
     ];
 
     const exactMatch = imageMap.find((item) => normalizedPath === item.page);
