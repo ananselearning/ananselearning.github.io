@@ -319,9 +319,7 @@
   }
 
   function getPaystackProductUrl(title) {
-    const normalizedTitle = String(title || "")
-      .trim()
-      .toLowerCase();
+    const normalizedTitle = normalizeProductTitle(title);
 
     if (normalizedTitle.includes("worlds they made")) {
       return "https://paystack.com/buy/ananselearning-book-worlds-they-made";
@@ -409,6 +407,22 @@
 
     if (normalizedTitle.includes("plantains amazing journey")) {
       return "https://paystack.com/buy/plantains-amazing-journey-poster";
+    }
+
+    if (normalizedTitle.includes("afafanto") && normalizedTitle.includes("starter set")) {
+      return "https://paystack.com/buy/afafanto-starter-set-bundle";
+    }
+
+    if (normalizedTitle.includes("boa me na me mmoa wo")) {
+      return "https://paystack.com/buy/boa-me-na-me-mmoa-wo-bundle";
+    }
+
+    if (normalizedTitle.includes("nyansapo") && normalizedTitle.includes("family learning set")) {
+      return "https://paystack.com/buy/nyansapo-family-learning-set-bundle";
+    }
+
+    if (normalizedTitle.includes("eban") && normalizedTitle.includes("homeschool set")) {
+      return "https://paystack.com/buy/eban-homeschool-set-bundle";
     }
 
     return null;
