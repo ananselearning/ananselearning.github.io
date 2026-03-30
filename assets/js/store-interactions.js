@@ -14,6 +14,7 @@
   const imagePreview = createImagePreview();
 
   initStorePreviewPaystackTiles();
+  initCyclingCardImages();
   initStockistCards();
 
   sections.forEach((section) => {
@@ -81,6 +82,42 @@
       });
     });
   }
+
+  function initCyclingCardImages() {
+    const cardsWithImageSets = Array.from(
+      document.querySelectorAll(".catalogue-card[data-preview-images]"),
+    );
+
+    cardsWithImageSets.forEach((card) => {
+      const image = card.querySelector("figure img");
+      if (!image) {
+        return;
+      }
+
+      const sources = String(card.dataset.previewImages || "")
+        .split("|")
+        .map((source) => source.trim())
+        .filter(Boolean);
+
+      if (sources.length <= 1) {
+        return;
+      }
+
+      let activeIndex = 0;
+      image.src = sources[activeIndex];
+
+      window.setInterval(() => {
+        image.classList.add("is-fading");
+
+        window.setTimeout(() => {
+          activeIndex = (activeIndex + 1) % sources.length;
+          image.src = sources[activeIndex];
+          image.classList.remove("is-fading");
+        }, 250);
+      }, 5000);
+    });
+  }
+
   const allCards = sections.flatMap((section) =>
     Array.from(section.querySelectorAll(".catalogue-card")),
   );
@@ -367,12 +404,21 @@
       return;
     }
 
-    const source = image.currentSrc || image.getAttribute("src") || "";
-    if (!source) {
+    const fallbackSource = image.currentSrc || image.getAttribute("src") || "";
+    const sources = String(card.dataset.previewImages || "")
+      .split("|")
+      .map((source) => source.trim())
+      .filter(Boolean);
+    const previewSources = sources.length ? sources : [fallbackSource];
+
+    if (!previewSources.length || !previewSources[0]) {
       return;
     }
 
-    imagePreview.toggle(source, image.getAttribute("alt") || "Product preview");
+    imagePreview.toggle(
+      previewSources,
+      image.getAttribute("alt") || "Product preview",
+    );
   }
 
   function createImagePreview() {
@@ -380,46 +426,161 @@
     overlay.className = "store-image-preview";
     overlay.setAttribute("aria-hidden", "true");
 
+    const previewFrame = document.createElement("div");
+    previewFrame.className = "store-image-preview__frame";
+
     const previewImage = document.createElement("img");
     previewImage.className = "store-image-preview__image";
     previewImage.alt = "";
 
-    overlay.appendChild(previewImage);
+    const previousButton = document.createElement("button");
+    previousButton.className =
+      "store-image-preview__nav store-image-preview__nav--prev";
+    previousButton.type = "button";
+    previousButton.setAttribute("aria-label", "Previous image");
+    previousButton.innerHTML = "&#8249;";
+
+    const nextButton = document.createElement("button");
+    nextButton.className =
+      "store-image-preview__nav store-image-preview__nav--next";
+    nextButton.type = "button";
+    nextButton.setAttribute("aria-label", "Next image");
+    nextButton.innerHTML = "&#8250;";
+
+    const dots = document.createElement("div");
+    dots.className = "store-image-preview__dots";
+
+    previewFrame.appendChild(previewImage);
+    previewFrame.appendChild(previousButton);
+    previewFrame.appendChild(nextButton);
+    previewFrame.appendChild(dots);
+    overlay.appendChild(previewFrame);
     document.body.appendChild(overlay);
 
-    let activeSource = "";
+    let activeKey = "";
+    let activeAlt = "";
+    let activeSources = [];
+    let activeIndex = 0;
+
+    function renderImage() {
+      const currentSource = activeSources[activeIndex] || "";
+      previewImage.src = currentSource;
+      previewImage.alt =
+        activeSources.length > 1
+          ? `${activeAlt} (${activeIndex + 1} of ${activeSources.length})`
+          : activeAlt;
+    }
+
+    function renderDots() {
+      dots.innerHTML = "";
+
+      if (activeSources.length <= 1) {
+        dots.hidden = true;
+        previousButton.hidden = true;
+        nextButton.hidden = true;
+        return;
+      }
+
+      dots.hidden = false;
+      previousButton.hidden = false;
+      nextButton.hidden = false;
+
+      activeSources.forEach((_, index) => {
+        const dotButton = document.createElement("button");
+        dotButton.type = "button";
+        dotButton.className = "store-image-preview__dot";
+        dotButton.setAttribute("aria-label", `View image ${index + 1}`);
+        if (index === activeIndex) {
+          dotButton.classList.add("is-active");
+        }
+
+        dotButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          activeIndex = index;
+          renderImage();
+          renderDots();
+        });
+
+        dots.appendChild(dotButton);
+      });
+    }
+
+    function step(direction) {
+      if (activeSources.length <= 1) {
+        return;
+      }
+
+      activeIndex =
+        (activeIndex + direction + activeSources.length) % activeSources.length;
+      renderImage();
+      renderDots();
+    }
 
     function close() {
       overlay.classList.remove("is-open");
       overlay.setAttribute("aria-hidden", "true");
       document.body.classList.remove("store-image-preview-open");
-      activeSource = "";
+      activeKey = "";
+      activeAlt = "";
+      activeSources = [];
+      activeIndex = 0;
     }
 
-    function open(source, altText) {
-      previewImage.src = source;
-      previewImage.alt = altText;
+    function open(sources, altText) {
+      activeSources = sources.slice();
+      activeAlt = altText;
+      activeKey = activeSources.join("|");
+      activeIndex = 0;
+      renderImage();
+      renderDots();
       overlay.classList.add("is-open");
       overlay.setAttribute("aria-hidden", "false");
       document.body.classList.add("store-image-preview-open");
-      activeSource = source;
     }
 
-    function toggle(source, altText) {
-      if (overlay.classList.contains("is-open") && activeSource === source) {
+    function toggle(sources, altText) {
+      const nextSources = Array.isArray(sources) ? sources : [sources];
+      const nextKey = nextSources.join("|");
+
+      if (overlay.classList.contains("is-open") && activeKey === nextKey) {
         close();
         return;
       }
 
-      open(source, altText);
+      open(nextSources, altText);
     }
 
     overlay.addEventListener("click", close);
     previewImage.addEventListener("click", close);
+    previewFrame.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+    previousButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      step(-1);
+    });
+    nextButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      step(1);
+    });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && overlay.classList.contains("is-open")) {
+      if (!overlay.classList.contains("is-open")) {
+        return;
+      }
+
+      if (event.key === "Escape") {
         close();
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        step(-1);
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        step(1);
       }
     });
 
