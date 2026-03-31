@@ -85,14 +85,8 @@
 
       if (!isHomePage) {
         const applyStaticHeroMode = () => {
-          if (isDarkTheme()) {
-            hero.style.backgroundImage = `${baseOverlay}, url("${heroImageUrl}")`;
-            hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
-            return;
-          }
-
-          hero.style.backgroundImage = `url("${heroImageUrl}")`;
-          hero.style.setProperty("--hero-text-rgb", "17, 17, 17");
+          hero.style.backgroundImage = `${baseOverlay}, url("${heroImageUrl}")`;
+          hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
         };
 
         applyStaticHeroMode();
@@ -263,15 +257,10 @@
     const imageUrl = urlMatch[1];
     const baseOverlay =
       "linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%)";
-    const isDarkTheme = () =>
-      document.documentElement.getAttribute("data-theme") === "dark";
 
     const applyMode = () => {
-      if (isDarkTheme()) {
-        hero.style.backgroundImage = `${baseOverlay}, url("${imageUrl}")`;
-      } else {
-        hero.style.backgroundImage = `url("${imageUrl}")`;
-      }
+      hero.style.backgroundImage = `${baseOverlay}, url("${imageUrl}")`;
+      hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
     };
 
     applyMode();
