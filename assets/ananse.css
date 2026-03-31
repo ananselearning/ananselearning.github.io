@@ -378,6 +378,18 @@ body>* {
   color: #ffffff;
 }
 
+[data-theme="light"] .store-page .page-hero.has-photo-hero .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
+}
+
+[data-theme="light"] .store-page .page-hero.has-photo-hero .btn-outline-light:hover,
+[data-theme="light"] .store-page .page-hero.has-photo-hero .btn-outline-light:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
 .page-hero::before,
 .page-hero::after {
   content: "";

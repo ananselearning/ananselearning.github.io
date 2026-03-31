@@ -88,6 +88,19 @@
   opacity: 1;
 }
 
+[data-theme="light"] .store-page .hero-stats {
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .store-page .hero-stat strong {
+  color: #ffffff;
+}
+
+[data-theme="light"] .store-page .hero-stat span {
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 0.85;
+}
+
 /* ── Sticky Category Nav ── */
 .store-category-nav {
   position: sticky;
