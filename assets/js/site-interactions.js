@@ -75,7 +75,7 @@
     if (hero && imageConfig.hero) {
       const heroImageUrl = `${assetsPrefix}/images/page-images/${imageConfig.hero}`;
       hero.classList.add("has-photo-hero");
-      hero.style.backgroundImage = `linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%), url("${heroImageUrl}")`;
+      hero.style.backgroundImage = `linear-gradient(120deg, rgba(13, 34, 37, 0.42) 0%, rgba(16, 42, 45, 0.28) 100%), url("${heroImageUrl}")`;
     }
 
     if (!imageConfig.section) {
