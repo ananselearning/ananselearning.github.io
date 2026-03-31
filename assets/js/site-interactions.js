@@ -90,13 +90,21 @@
         overlay.style.background = baseOverlay;
         hero.prepend(overlay);
 
-        const textContainer = hero.querySelector(".container");
+        const textTargets = Array.from(
+          hero.querySelectorAll("h1, .home-hero-subtitle, p, .small-note"),
+        );
         const clearRadiusPx =
           parseFloat(
             getComputedStyle(overlay)
               .getPropertyValue("--spotlight-clear-radius")
               .trim(),
           ) || 560;
+        const featherRadiusPx =
+          parseFloat(
+            getComputedStyle(overlay)
+              .getPropertyValue("--spotlight-feather-radius")
+              .trim(),
+          ) || 920;
 
         hero.addEventListener("mousemove", (e) => {
           const rect = hero.getBoundingClientRect();
@@ -105,12 +113,34 @@
           overlay.style.setProperty("--cursor-x", `${cursorX.toFixed(0)}px`);
           overlay.style.setProperty("--cursor-y", `${cursorY.toFixed(0)}px`);
 
-          if (!textContainer) {
+          if (textTargets.length === 0) {
             return;
           }
 
-          // Blend text from white to near-black as spotlight approaches text block.
-          const textRect = textContainer.getBoundingClientRect();
+          // Blend text from white to near-black as spotlight approaches the actual text block.
+          const visibleTextRects = textTargets
+            .filter((el) => el.offsetParent !== null)
+            .map((el) => el.getBoundingClientRect());
+
+          if (visibleTextRects.length === 0) {
+            return;
+          }
+
+          const textRect = visibleTextRects.reduce(
+            (acc, rect) => ({
+              left: Math.min(acc.left, rect.left),
+              right: Math.max(acc.right, rect.right),
+              top: Math.min(acc.top, rect.top),
+              bottom: Math.max(acc.bottom, rect.bottom),
+            }),
+            {
+              left: visibleTextRects[0].left,
+              right: visibleTextRects[0].right,
+              top: visibleTextRects[0].top,
+              bottom: visibleTextRects[0].bottom,
+            },
+          );
+
           const nearestX = Math.max(
             textRect.left,
             Math.min(e.clientX, textRect.right),
@@ -123,11 +153,19 @@
             e.clientX - nearestX,
             e.clientY - nearestY,
           );
+          const effectiveRange = Math.max(clearRadiusPx, featherRadiusPx);
           const proximity = Math.max(
             0,
-            Math.min(1, 1 - distanceToText / clearRadiusPx),
+            Math.min(1, 1 - distanceToText / effectiveRange),
           );
-          const channel = Math.round(255 - 238 * proximity);
+
+          // Keep text white for most of the range; darken only when very close.
+          let channel = 255;
+          if (proximity >= 0.78) {
+            const nearBand = (proximity - 0.78) / 0.22;
+            channel = Math.round(255 - 238 * nearBand);
+          }
+
           hero.style.setProperty(
             "--hero-text-rgb",
             `${channel}, ${channel}, ${channel}`,

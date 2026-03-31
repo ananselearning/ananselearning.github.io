@@ -298,8 +298,8 @@ body>* {
 }
 
 .hero-spotlight-overlay {
-  --spotlight-clear-radius: 350px;
-  --spotlight-feather-radius: 700px;
+  --spotlight-clear-radius: 200px;
+  --spotlight-feather-radius: 300px;
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -328,7 +328,7 @@ body>* {
 .page-hero.has-photo-hero .small-note,
 .page-hero.has-photo-hero .home-hero-subtitle {
   color: rgb(var(--hero-text-rgb));
-  transition: color 140ms linear;
+  transition: color 70ms linear;
 }
 
 .page-hero::before,
