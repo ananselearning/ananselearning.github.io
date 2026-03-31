@@ -19,6 +19,7 @@
     initThemeMode();
     initMobileMenus();
     initPageImagery();
+    initInlineHeroTheme();
     initHomeProductHighlights();
     initWhatsAppPrefillLinks();
     initNewsletterForms();
@@ -72,15 +73,30 @@
     const assetsPrefix = getAssetsPrefix(path);
     const hero = document.querySelector(".page-hero");
     const isHomePage = path === "/" || path === "/index.html";
+    const isDarkTheme = () =>
+      document.documentElement.getAttribute("data-theme") === "dark";
 
     if (hero && imageConfig.hero) {
       const heroImageUrl = `${assetsPrefix}/images/page-images/${imageConfig.hero}`;
       hero.classList.add("has-photo-hero");
+      hero.dataset.heroManagedByJs = "true";
       const baseOverlay =
         "linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%)";
 
       if (!isHomePage) {
-        hero.style.backgroundImage = `${baseOverlay}, url("${heroImageUrl}")`;
+        const applyStaticHeroMode = () => {
+          if (isDarkTheme()) {
+            hero.style.backgroundImage = `${baseOverlay}, url("${heroImageUrl}")`;
+            hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
+            return;
+          }
+
+          hero.style.backgroundImage = `url("${heroImageUrl}")`;
+          hero.style.setProperty("--hero-text-rgb", "17, 17, 17");
+        };
+
+        applyStaticHeroMode();
+        document.addEventListener("themechange", applyStaticHeroMode);
       } else {
         hero.style.backgroundImage = `url("${heroImageUrl}")`;
 
@@ -106,7 +122,30 @@
               .trim(),
           ) || 920;
 
+        const applyHomeHeroMode = () => {
+          if (isDarkTheme()) {
+            overlay.style.display = "block";
+            hero.style.backgroundImage = `url("${heroImageUrl}")`;
+            hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
+            return;
+          }
+
+          // Light mode: no spotlight, black text, and clearer hero image.
+          overlay.style.display = "none";
+          overlay.style.removeProperty("--cursor-x");
+          overlay.style.removeProperty("--cursor-y");
+          hero.style.setProperty("--hero-text-rgb", "17, 17, 17");
+          hero.style.backgroundImage = `url("${heroImageUrl}")`;
+        };
+
+        applyHomeHeroMode();
+        document.addEventListener("themechange", applyHomeHeroMode);
+
         hero.addEventListener("mousemove", (e) => {
+          if (!isDarkTheme()) {
+            return;
+          }
+
           const rect = hero.getBoundingClientRect();
           const cursorX = e.clientX - rect.left;
           const cursorY = e.clientY - rect.top;
@@ -173,6 +212,10 @@
         });
 
         hero.addEventListener("mouseleave", () => {
+          if (!isDarkTheme()) {
+            return;
+          }
+
           overlay.style.removeProperty("--cursor-x");
           overlay.style.removeProperty("--cursor-y");
           hero.style.removeProperty("--hero-text-rgb");
@@ -205,6 +248,34 @@
 
     figure.appendChild(image);
     firstSectionContainer.appendChild(figure);
+  }
+
+  function initInlineHeroTheme() {
+    const hero = document.querySelector(".page-hero.has-photo-hero");
+    if (!hero || hero.dataset.heroManagedByJs) return;
+
+    const inlineBg = hero.style.backgroundImage;
+    if (!inlineBg) return;
+
+    const urlMatch = inlineBg.match(/url\(["']?([^"')]+)["']?\)/);
+    if (!urlMatch) return;
+
+    const imageUrl = urlMatch[1];
+    const baseOverlay =
+      "linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%)";
+    const isDarkTheme = () =>
+      document.documentElement.getAttribute("data-theme") === "dark";
+
+    const applyMode = () => {
+      if (isDarkTheme()) {
+        hero.style.backgroundImage = `${baseOverlay}, url("${imageUrl}")`;
+      } else {
+        hero.style.backgroundImage = `url("${imageUrl}")`;
+      }
+    };
+
+    applyMode();
+    document.addEventListener("themechange", applyMode);
   }
 
   function getAssetsPrefix(pathname) {
@@ -285,6 +356,9 @@
   function applyTheme(theme, persist) {
     document.documentElement.setAttribute("data-theme", theme);
     syncThemeToggleIcons();
+    document.dispatchEvent(
+      new CustomEvent("themechange", { detail: { theme } }),
+    );
 
     if (persist) {
       localStorage.setItem("theme", theme);
