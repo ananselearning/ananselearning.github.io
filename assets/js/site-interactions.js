@@ -71,11 +71,75 @@
 
     const assetsPrefix = getAssetsPrefix(path);
     const hero = document.querySelector(".page-hero");
+    const isHomePage = path === "/" || path === "/index.html";
 
     if (hero && imageConfig.hero) {
       const heroImageUrl = `${assetsPrefix}/images/page-images/${imageConfig.hero}`;
       hero.classList.add("has-photo-hero");
-      hero.style.backgroundImage = `linear-gradient(120deg, rgba(13, 34, 37, 0.42) 0%, rgba(16, 42, 45, 0.28) 100%), url("${heroImageUrl}")`;
+      const baseOverlay =
+        "linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%)";
+
+      if (!isHomePage) {
+        hero.style.backgroundImage = `${baseOverlay}, url("${heroImageUrl}")`;
+      } else {
+        hero.style.backgroundImage = `url("${heroImageUrl}")`;
+
+        // Spotlight overlay — dark gradient with a circular reveal at cursor
+        const overlay = document.createElement("div");
+        overlay.className = "hero-spotlight-overlay";
+        overlay.style.background = baseOverlay;
+        hero.prepend(overlay);
+
+        const textContainer = hero.querySelector(".container");
+        const clearRadiusPx =
+          parseFloat(
+            getComputedStyle(overlay)
+              .getPropertyValue("--spotlight-clear-radius")
+              .trim(),
+          ) || 560;
+
+        hero.addEventListener("mousemove", (e) => {
+          const rect = hero.getBoundingClientRect();
+          const cursorX = e.clientX - rect.left;
+          const cursorY = e.clientY - rect.top;
+          overlay.style.setProperty("--cursor-x", `${cursorX.toFixed(0)}px`);
+          overlay.style.setProperty("--cursor-y", `${cursorY.toFixed(0)}px`);
+
+          if (!textContainer) {
+            return;
+          }
+
+          // Blend text from white to near-black as spotlight approaches text block.
+          const textRect = textContainer.getBoundingClientRect();
+          const nearestX = Math.max(
+            textRect.left,
+            Math.min(e.clientX, textRect.right),
+          );
+          const nearestY = Math.max(
+            textRect.top,
+            Math.min(e.clientY, textRect.bottom),
+          );
+          const distanceToText = Math.hypot(
+            e.clientX - nearestX,
+            e.clientY - nearestY,
+          );
+          const proximity = Math.max(
+            0,
+            Math.min(1, 1 - distanceToText / clearRadiusPx),
+          );
+          const channel = Math.round(255 - 238 * proximity);
+          hero.style.setProperty(
+            "--hero-text-rgb",
+            `${channel}, ${channel}, ${channel}`,
+          );
+        });
+
+        hero.addEventListener("mouseleave", () => {
+          overlay.style.removeProperty("--cursor-x");
+          overlay.style.removeProperty("--cursor-y");
+          hero.style.removeProperty("--hero-text-rgb");
+        });
+      }
     }
 
     if (!imageConfig.section) {
