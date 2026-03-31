@@ -19,7 +19,6 @@
     initThemeMode();
     initMobileMenus();
     initPageImagery();
-    initInlineHeroTheme();
     initHomeProductHighlights();
     initWhatsAppPrefillLinks();
     initNewsletterForms();
@@ -72,149 +71,11 @@
 
     const assetsPrefix = getAssetsPrefix(path);
     const hero = document.querySelector(".page-hero");
-    const isHomePage = path === "/" || path === "/index.html";
-    const isDarkTheme = () =>
-      document.documentElement.getAttribute("data-theme") === "dark";
 
     if (hero && imageConfig.hero) {
       const heroImageUrl = `${assetsPrefix}/images/page-images/${imageConfig.hero}`;
       hero.classList.add("has-photo-hero");
-      hero.dataset.heroManagedByJs = "true";
-      const baseOverlay =
-        "linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%)";
-
-      if (!isHomePage) {
-        const applyStaticHeroMode = () => {
-          hero.style.backgroundImage = `${baseOverlay}, url("${heroImageUrl}")`;
-          hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
-        };
-
-        applyStaticHeroMode();
-        document.addEventListener("themechange", applyStaticHeroMode);
-      } else {
-        hero.style.backgroundImage = `url("${heroImageUrl}")`;
-
-        // Spotlight overlay — dark gradient with a circular reveal at cursor
-        const overlay = document.createElement("div");
-        overlay.className = "hero-spotlight-overlay";
-        overlay.style.background = baseOverlay;
-        hero.prepend(overlay);
-
-        const textTargets = Array.from(
-          hero.querySelectorAll("h1, .home-hero-subtitle, p, .small-note"),
-        );
-        const clearRadiusPx =
-          parseFloat(
-            getComputedStyle(overlay)
-              .getPropertyValue("--spotlight-clear-radius")
-              .trim(),
-          ) || 560;
-        const featherRadiusPx =
-          parseFloat(
-            getComputedStyle(overlay)
-              .getPropertyValue("--spotlight-feather-radius")
-              .trim(),
-          ) || 920;
-
-        const applyHomeHeroMode = () => {
-          if (isDarkTheme()) {
-            overlay.style.display = "block";
-            hero.style.backgroundImage = `url("${heroImageUrl}")`;
-            hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
-            return;
-          }
-
-          // Light mode: no spotlight, black text, and clearer hero image.
-          overlay.style.display = "none";
-          overlay.style.removeProperty("--cursor-x");
-          overlay.style.removeProperty("--cursor-y");
-          hero.style.setProperty("--hero-text-rgb", "17, 17, 17");
-          hero.style.backgroundImage = `url("${heroImageUrl}")`;
-        };
-
-        applyHomeHeroMode();
-        document.addEventListener("themechange", applyHomeHeroMode);
-
-        hero.addEventListener("mousemove", (e) => {
-          if (!isDarkTheme()) {
-            return;
-          }
-
-          const rect = hero.getBoundingClientRect();
-          const cursorX = e.clientX - rect.left;
-          const cursorY = e.clientY - rect.top;
-          overlay.style.setProperty("--cursor-x", `${cursorX.toFixed(0)}px`);
-          overlay.style.setProperty("--cursor-y", `${cursorY.toFixed(0)}px`);
-
-          if (textTargets.length === 0) {
-            return;
-          }
-
-          // Blend text from white to near-black as spotlight approaches the actual text block.
-          const visibleTextRects = textTargets
-            .filter((el) => el.offsetParent !== null)
-            .map((el) => el.getBoundingClientRect());
-
-          if (visibleTextRects.length === 0) {
-            return;
-          }
-
-          const textRect = visibleTextRects.reduce(
-            (acc, rect) => ({
-              left: Math.min(acc.left, rect.left),
-              right: Math.max(acc.right, rect.right),
-              top: Math.min(acc.top, rect.top),
-              bottom: Math.max(acc.bottom, rect.bottom),
-            }),
-            {
-              left: visibleTextRects[0].left,
-              right: visibleTextRects[0].right,
-              top: visibleTextRects[0].top,
-              bottom: visibleTextRects[0].bottom,
-            },
-          );
-
-          const nearestX = Math.max(
-            textRect.left,
-            Math.min(e.clientX, textRect.right),
-          );
-          const nearestY = Math.max(
-            textRect.top,
-            Math.min(e.clientY, textRect.bottom),
-          );
-          const distanceToText = Math.hypot(
-            e.clientX - nearestX,
-            e.clientY - nearestY,
-          );
-          const effectiveRange = Math.max(clearRadiusPx, featherRadiusPx);
-          const proximity = Math.max(
-            0,
-            Math.min(1, 1 - distanceToText / effectiveRange),
-          );
-
-          // Keep text white for most of the range; darken only when very close.
-          let channel = 255;
-          if (proximity >= 0.78) {
-            const nearBand = (proximity - 0.78) / 0.22;
-            channel = Math.round(255 - 238 * nearBand);
-          }
-
-          hero.style.setProperty(
-            "--hero-text-rgb",
-            `${channel}, ${channel}, ${channel}`,
-          );
-        });
-
-        hero.addEventListener("mouseleave", () => {
-          if (!isDarkTheme()) {
-            return;
-          }
-
-          overlay.style.removeProperty("--cursor-x");
-          overlay.style.removeProperty("--cursor-y");
-          hero.style.removeProperty("--hero-text-rgb");
-        });
-      }
+      hero.style.backgroundImage = `linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%), url("${heroImageUrl}")`;
     }
 
     if (!imageConfig.section) {
@@ -242,29 +103,6 @@
 
     figure.appendChild(image);
     firstSectionContainer.appendChild(figure);
-  }
-
-  function initInlineHeroTheme() {
-    const hero = document.querySelector(".page-hero.has-photo-hero");
-    if (!hero || hero.dataset.heroManagedByJs) return;
-
-    const inlineBg = hero.style.backgroundImage;
-    if (!inlineBg) return;
-
-    const urlMatch = inlineBg.match(/url\(["']?([^"')]+)["']?\)/);
-    if (!urlMatch) return;
-
-    const imageUrl = urlMatch[1];
-    const baseOverlay =
-      "linear-gradient(120deg, rgba(13, 34, 37, 0.68) 0%, rgba(16, 42, 45, 0.52) 100%)";
-
-    const applyMode = () => {
-      hero.style.backgroundImage = `${baseOverlay}, url("${imageUrl}")`;
-      hero.style.setProperty("--hero-text-rgb", "255, 255, 255");
-    };
-
-    applyMode();
-    document.addEventListener("themechange", applyMode);
   }
 
   function getAssetsPrefix(pathname) {
@@ -345,9 +183,6 @@
   function applyTheme(theme, persist) {
     document.documentElement.setAttribute("data-theme", theme);
     syncThemeToggleIcons();
-    document.dispatchEvent(
-      new CustomEvent("themechange", { detail: { theme } }),
-    );
 
     if (persist) {
       localStorage.setItem("theme", theme);

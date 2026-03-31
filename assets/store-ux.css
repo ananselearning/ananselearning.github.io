@@ -75,32 +75,6 @@
   letter-spacing: 0.06em;
 }
 
-[data-theme="light"] .hero-stats {
-  border-top-color: rgba(17, 17, 17, 0.15);
-}
-
-[data-theme="light"] .hero-stat strong {
-  color: var(--dark-text-color);
-}
-
-[data-theme="light"] .hero-stat span {
-  color: rgba(26, 52, 53, 0.75);
-  opacity: 1;
-}
-
-[data-theme="light"] .store-page .hero-stats {
-  border-top-color: rgba(255, 255, 255, 0.2);
-}
-
-[data-theme="light"] .store-page .hero-stat strong {
-  color: #ffffff;
-}
-
-[data-theme="light"] .store-page .hero-stat span {
-  color: rgba(255, 255, 255, 0.9);
-  opacity: 0.85;
-}
-
 /* ── Sticky Category Nav ── */
 .store-category-nav {
   position: sticky;
